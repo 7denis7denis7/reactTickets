@@ -3,8 +3,6 @@ import WrapperStyle from './Wrapper.module.scss'
 
 import Rating from '../Rating/Rating'
 import AllMark from '../AllMark/AllMark'
-import Total from '../Total/Total'
-
 
 class Wrapper extends Component {
     constructor(props){
@@ -13,39 +11,27 @@ class Wrapper extends Component {
         this.state ={
             bad: 0,
             normal: 0,
-            good: 0,
-            total: 0
+            good: 0
         }
     }
 
-    incrementTotal = () => {
-        this.setState({
-            total: this.state.total+1
-        })
-    }
-
-    setMark = (e) => {
+    setMark = (e, star) => {
         if(e.target){
-            const currenRate = e.target.attributes[0].value;
-            if(currenRate <= 0 && currenRate > 5){
+            if(star <= 0 && star > 5){
                 return false;
             }else{
-                this.incrementTotal();
-                if(currenRate <= 2){
-                    this.setState({
-                        bad: this.state.bad+1,
-                        total: this.state.total+1,
-                    })
-                }else if(currenRate == 3){
-                    this.setState({
-                        normal: this.state.normal+1,
-                        total: this.state.total+1,
-                    })
+                if(star <= 2){
+                    this.setState(state => ({
+                        bad: state.bad+1,
+                    }));
+                }else if(star === 3){
+                    this.setState(state => ({
+                        normal: state.normal+1
+                    }));
                 }else{
-                    this.setState({
-                        good: this.state.good+1,
-                        total: this.state.total+1,
-                    })
+                    this.setState(state => ({
+                        good: state.good + 1
+                    }))
                 }   
             }
         }
@@ -53,7 +39,8 @@ class Wrapper extends Component {
 
 
     render() { 
-        const {bad, normal, total, good} = this.state;
+        const {bad, normal, good} = this.state;
+        const total = bad + normal + good;
         return (
             <div className={WrapperStyle.main}> 
                 <Rating 
@@ -63,9 +50,7 @@ class Wrapper extends Component {
                     bad={bad}
                     normal={normal}
                     good={good}
-                />
-                <Total 
-                    total={total}    
+                    total={total}
                     percent={total === 0 ? 0 : (good / total * 100).toFixed(2)}
                 />
             </div>
