@@ -16,24 +16,16 @@ class Wrapper extends Component {
     }
 
     setMark = (e, star) => {
-        if(e.target){
-            if(star <= 0 && star > 5){
-                return false;
+        if(star <= 0 && star > 5){
+            return false;
+        }else{
+            if(star <= 2){
+                this.setState(({ bad }) => ({ bad: bad + 1 }));
+            }else if(star === 3){
+                this.setState(({normal}) => ({normal: normal + 1}));
             }else{
-                if(star <= 2){
-                    this.setState(state => ({
-                        bad: state.bad+1,
-                    }));
-                }else if(star === 3){
-                    this.setState(state => ({
-                        normal: state.normal+1
-                    }));
-                }else{
-                    this.setState(state => ({
-                        good: state.good + 1
-                    }))
-                }   
-            }
+                this.setState(({good}) => ({good: good + 1}));
+            }   
         }
     }
 
@@ -50,8 +42,6 @@ class Wrapper extends Component {
                     bad={bad}
                     normal={normal}
                     good={good}
-                    total={total}
-                    percent={total === 0 ? 0 : (good / total * 100).toFixed(2)}
                 />
             </div>
         );

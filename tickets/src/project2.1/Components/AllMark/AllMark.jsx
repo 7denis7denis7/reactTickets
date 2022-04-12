@@ -5,8 +5,23 @@ class AllMark extends Component {
     constructor(props) {
       super(props);
     }
+
+    countTotal = (bad, good, percent) => {
+      return bad+good+percent;
+    }
+
+    countPercent = (good, total) => {
+      if(total === 0) {
+        return 0;
+      }else{
+        return (good / total * 100).toFixed(2);
+      }
+    }
+  
     render() {  
-        const {bad,normal,good, total, percent} = this.props;       
+        const {bad, normal, good} = this.props;       
+        const total = this.countTotal(bad, normal, good);
+        const goodPercent = this.countPercent(good, total);
         return (
           <div>
             <div className={AllMarkStyle.main}>
@@ -27,7 +42,7 @@ class AllMark extends Component {
                   Total marks: <span>{total}</span>
               </div>
               <div className={AllMarkStyle.elem}>
-                  Percent of good marks: <span>{percent}</span>
+                  Percent of good marks: <span>{goodPercent}</span>
               </div>
             </div>
           </div>

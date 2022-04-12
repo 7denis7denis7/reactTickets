@@ -16,7 +16,7 @@ class Rating extends Component {
               {
                 ratingStars.map((star, index) => {
                   return (
-                    <div key={++index} onClick={(e)=>this.props.setMark(e, star)} value={star} className={`${RatingStyle.simple_rating__label}`} >
+                    <div key={++index} onClick={(e)=>this.props.setMark(e, star)} className={`${RatingStyle.simple_rating__label}`} >
                       <input id={`simple_rating__${index}`} type="radio" className={RatingStyle.simple_rating__item} name='simple_rating' value={index}/>
                       <label htmlFor={`simple_rating__${index}`} className={RatingStyle.simple_rating__label}></label>
                     </div>
