@@ -15,7 +15,7 @@ class Wrapper extends Component {
         }
     }
 
-    setMark = (e, star) => {
+    setMark = (star) => {
         if(star <= 0 && star > 5){
             return false;
         }else{
