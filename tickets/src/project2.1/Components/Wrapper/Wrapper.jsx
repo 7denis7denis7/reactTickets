@@ -32,7 +32,6 @@ class Wrapper extends Component {
 
     render() { 
         const {bad, normal, good} = this.state;
-        const total = bad + normal + good;
         return (
             <div className={WrapperStyle.main}> 
                 <Rating 
