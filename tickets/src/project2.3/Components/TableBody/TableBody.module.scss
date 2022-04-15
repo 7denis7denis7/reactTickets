@@ -1,0 +1,23 @@
+.text{
+    color: black;
+    font-size: 16px;
+    padding: 5px 20px;
+    vertical-align: top;
+}
+tbody{
+    background: white;
+    height: auto;
+}
+tr{
+    opacity: 1;
+    transition: background .2s ease-in-out, opacity .2s ease-in-out;
+}
+.guestIn{
+    background: lightgray;
+    opacity: .4;
+    transition: opacity .2s ease-in-out background .2s ease-in-out;
+}
+.active{
+    border: 1px solid red;
+    transition: .1s ease-in-out;
+}

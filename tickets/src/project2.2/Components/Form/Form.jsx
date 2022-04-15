@@ -22,13 +22,13 @@ class Form extends Component {
     
  
     render() { 
-      const id = nextId();
+      const {name, gender, age} = this.state;
       return (
         <div className={FormStyle.form}>
-          <form onSubmit={(e) => this.props.addNewPerson(this.state.name, this.state.gender, this.state.age, id, e)}>
-            <input className={FormStyle.input} value={this.state.name || ''} onChange={this.handleInput} placeholder='Имя' name='name' type='text'/>
-            <input className={FormStyle.input} value={this.state.gender || ''} onChange={this.handleInput} placeholder='Пол' name='gender' type='text'/>
-            <input className={FormStyle.input} value={this.state.age || ''} onChange={this.handleInput} placeholder='Возраст' name='age' type='number'/>
+          <form onSubmit={(e) => this.props.addNewPerson(name, gender, age, nextId(), e)}>
+            <input className={FormStyle.input} value={name || ''} onChange={this.handleInput} placeholder='Имя' name='name' type='text'/>
+            <input className={FormStyle.input} value={gender || ''} onChange={this.handleInput} placeholder='Пол' name='gender' type='text'/>
+            <input className={FormStyle.input} value={age || ''} onChange={this.handleInput} placeholder='Возраст' name='age' type='number'/>
             <button className={FormStyle.button}>Добавить гостя</button>
           </form>
         </div>

@@ -1,0 +1,22 @@
+@mixin resetFormElement{
+    outline-color: transparent;
+    outline-width: 0px;
+    &:hover,
+    &:active,
+    &:focus{
+        outline-color: transparent;
+        outline-width: 0px;
+    }
+}
+
+
+
+.input{
+    height: 26px;
+    width: 200px;
+    border: none;
+    padding: 0 8px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    @include resetFormElement;
+}

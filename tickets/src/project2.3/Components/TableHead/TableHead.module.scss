@@ -1,0 +1,14 @@
+thead{
+    background: lightgray;
+}
+.title{
+    font-size: 18px;
+    font-weight: 500;
+    padding: 5px 20px;
+    &:first-child{
+        border-radius: 8px 0 0 0;
+    }
+    &:last-child{
+        border-radius: 0 8px 0 0;
+    }
+}

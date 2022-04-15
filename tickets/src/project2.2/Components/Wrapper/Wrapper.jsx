@@ -19,20 +19,18 @@ class Wrapper extends Component {
   }
   isVisit = (id) => {
     this.setState((state) => {  
-      //Почему не работает со spread?
-      const tmpData = state.data.map(i => ({...i}));
-      // const tmpData = [...this.state.data];
-      tmpData.map(item => {
+      const tmpData = state.data.map(item => {
         if(item.id === id){
-          item.visit = !item.visit
+          item.visit = !item.visit;
         }
-        return item;
+        return {...item}
+      });
+        return {
+          data: [...tmpData]
+        };
       })
-      return {
-        data: [...tmpData]
-      };
-    })
-  }
+    }
+
   
   addNewPerson = (name, gender, age, id, e) => {
     e.preventDefault();
