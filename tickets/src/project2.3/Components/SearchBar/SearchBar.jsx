@@ -23,7 +23,7 @@ class SearchBar extends Component {
             <input 
             placeholder='Поиск сотрудника' 
             name='search' value={search || ''}  
-            onChange={e => { this.handleInput(e); findEmployee(e) }}
+            onChange={e => {this.handleInput(e); findEmployee(e)}}
             className={SearchBarStyle.input} 
             type="text"/>
         );

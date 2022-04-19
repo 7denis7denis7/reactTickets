@@ -8,7 +8,7 @@ class TableBody extends Component {
 
   render() {  
     const currentData = [...this.props.data]
-    const {editEmploee} = this.props
+    const {setId} = this.props
     return (
       <tbody className={TableBodyStyle.test}>
         {
@@ -25,10 +25,10 @@ class TableBody extends Component {
                 <td className={TableBodyStyle.text}>{name}</td>
                 <td className={TableBodyStyle.text}>{department}</td>
                 <td className={TableBodyStyle.text}>
-                  <button onClick={() => editEmploee(id)}>Редактировать</button>
+                  <button onClick={(e) => setId(e,id)} name='editable'>Редактировать</button>
                 </td>
                 <td className={TableBodyStyle.text}>
-                  <button>Удалить</button>
+                  <button onClick={(e) => setId(e,id)} name='delete'>Удалить</button>
                 </td>
               </tr>
             )

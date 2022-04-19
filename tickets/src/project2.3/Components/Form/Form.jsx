@@ -10,43 +10,45 @@ class Form extends Component {
         department: 'разработка',
       }
     }
-    
 
+    setNewValuesForm = (e) => {
+      e.preventDefault();
+      const {name, department} = this.state;
+      const {addNewPerson, editable} = this.props
+      addNewPerson(name, department, editable);
+      this.setState({
+        name: null,
+        department: 'разработка'
+      })
+    }
 
     componentDidUpdate(prevProps) {
       if(this.props.editable !== prevProps.editable){
-        if(this.props.currentPersonObject){
+        if(this.props.editPerson){
           this.setState({
-            name: this.props.currentPersonObject.name,
-            department: this.props.currentPersonObject.department
+            name: this.props.editPerson.name,
+            department: this.props.editPerson.department
           })
-          document.querySelector('form button').textContent = "save";
         }
 
       }
     }
 
-
-
-    handleInput = (e) => {
+    handleElement = (e) => {
       this.setState({
         [e.target.name] : e.target.value
       })
     }
 
-    handleSelect = (e) => {
-      this.setState({
-        department: e.target.value
-      })
-    } 
 
     render() { 
       const {name, department} = this.state;
+      const {editable} = this.props
       return (
         <div className={FormStyle.form}>
-          <form onSubmit={(e) => this.props.addNewPerson(name, department, this.props.editable, e)}>
-            <input className={FormStyle.input} value={name || ''} required onChange={this.handleInput} placeholder='Имя' name='name' type='text'/>
-            <select name="department" value={this.state.department} className={FormStyle.select} onChange={this.handleSelect}>
+          <form onSubmit={this.setNewValuesForm}>
+            <input className={FormStyle.input} value={name || ''} required onChange={this.handleElement} placeholder='Имя' name='name' type='text'/>
+            <select name="department" value={department} className={FormStyle.select} name='department' onChange={this.handleElement}>
               <option value="разработка">
                 разработка
               </option>
@@ -57,7 +59,7 @@ class Form extends Component {
                 менеджмент
               </option>
             </select>
-            <button className={FormStyle.button}>Добавить гостя</button>
+            <button className={FormStyle.button}>{editable ? 'save' : 'Добавить гостя'}</button>
           </form>
         </div>
       );

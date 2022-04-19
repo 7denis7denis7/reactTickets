@@ -4,6 +4,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import TableHead from '../TableHead/TableHead'
 import TableBody from '../TableBody/TableBody'
 import Form from '../Form/Form'
+import Modal from '../Modal/Modal'
 
 import WrapperStyle from './Wrapper.module.scss';
 
@@ -11,20 +12,57 @@ import WrapperStyle from './Wrapper.module.scss';
 class Wrapper extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      data: [
+    
+    if (localStorage.getItem('data') === null) {
+      const dataArr =  [
         {name: 'Lorem', department: 'разработка', id: 1, 'find': false},
         {name: 'Abilisk', department: 'бухгалтерия', id: 2, 'find': false},
         {name: 'Morem', department: 'менеджмент', id: 3, 'find': false}
-      ],
-      editable: null,
-      deleted: null,
+      ]
+      localStorage.setItem('data', JSON.stringify(dataArr))
     }
+
+    // this.state = {
+    //   data: [
+    //     {name: 'Lorem', department: 'разработка', id: 1, 'find': false},
+    //     {name: 'Abilisk', department: 'бухгалтерия', id: 2, 'find': false},
+    //     {name: 'Morem', department: 'менеджмент', id: 3, 'find': false}
+    //   ],
+    //   editable: null,
+    //   delete: null,
+    //   openModal: false
+    // }
+
+    this.state = {
+      data : [],
+      editable: null,
+      delete: null,
+      openModal: false
+    }
+
   }
   
-  addNewPerson = (name, department, id, e) => {
-    e.preventDefault();
+
+
+  componentDidMount() {
+    console.log('Монтирование и послыание запроса');
+    let data = localStorage.getItem('data');
+    data = JSON.parse(data);
+    console.log(data)
+    this.setState({
+      data: data  
+    })
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('data', JSON.stringify(this.state.data));
+  }
+
+
+
+
+  addNewPerson = (name, department, id) => {
+    const test = [...this.state.data];
     if(!id){
       const newPerson = {
         name,
@@ -32,76 +70,99 @@ class Wrapper extends Component {
         id: nextId(),
         visit: false
       }
-      this.setState((state) => {
-        return {
-          data: [...state.data, newPerson]
-        };
-      })
+      test.push(newPerson);
     }else{
-      const currentPersonObject = this.state.data.map((item)=>{
+      test.forEach((item)=>{
         if(item.id === id){
           item.name = name;
           item.department = department;
         }
-        return item;
-      })
-      this.setState(() => {
-        return {
-          data: currentPersonObject
-        };
       })
     }
-    
-    
+    this.setState(() => {
+      return {
+        data: [...test],
+        editable: null
+      };
+    })
+    //localstorage
   }
+
 
   findEmployee = (e) => {
-    const tmpData = this.state.data.map(i => ({...i}));
     let val = e.target.value.trim('');
     if(val.length > 0){
-      tmpData.forEach(item => {
-        if(item.name.search(val) == -1){
-          console.log('ne naideno');
+      const tmpData = this.state.data.map(item => {
+        if(item.name.toLocaleLowerCase().search(val.toLocaleLowerCase()) === -1){
           item.find = false;
         }else{
-          console.log(`naideno - ${item.id}`);
           item.find = true;
         }
-      })
-      this.setState((state) => {
-        return {
-          data: tmpData
-        };
-      })
+        return item;
+      });
+      this.setState({data: tmpData})
     }else{
-      tmpData.forEach(item => {
+      const tmpData = this.state.data.map(item => {
         item.find = false;
-      })
-      this.setState((state) => {
-        return {
-          data: tmpData
-        };
-      })
+        return item;
+      });
+      this.setState({data: tmpData})
     }
   }
 
 
-  editEmploee = (id) => {
+  setId = (e, id) => {
     this.setState({
-      editable: id
+      [e.target.name] : id
     })
   }
 
+
+  closeModal = (e) => {
+    if(e.target.name === 'close'){
+      this.setState({
+        delete: null
+      })
+    }
+  }
+
+  deleteEmploeeFromData = (e, id) => {
+    if(e.target.name === 'confirm'){
+      //find person in dataList
+      const personList = this.state.data.filter(item => {
+        if(item.id !== id){
+          return item;
+        }
+      })
+      this.setState(() => {
+        return {
+          data: personList,
+          delete: null,
+          editable: null
+        };
+      })  
+    }
+  }
 
 
 
   render() { 
+    const {data, editable} = this.state;
     //Получаю конкретный обьект человека по id 
-    const currentPersonObject = this.state.data.find((item)=>{
-      if(item.id === this.state.editable){
+    const editPerson = data.find((item)=>{
+      if(item.id === editable){
         return item;
       }
     })
+
+    const deletePerson = data.find((item)=>{
+      console.log(data)
+      if(item.id === this.state.delete){
+        return item;
+      }
+    })
+
+
     return (
       <div className={WrapperStyle.container}>
         <h1 className={WrapperStyle.title}>Панель администратора</h1>
@@ -110,13 +171,19 @@ class Wrapper extends Component {
           <TableHead />
           <TableBody
             data={this.state.data}
-            editEmploee={this.editEmploee}
+            setId={this.setId}
           />
         </table>
         <Form 
           addNewPerson={this.addNewPerson}
           editable={this.state.editable}
-          currentPersonObject={currentPersonObject}
+          editPerson={editPerson}
+        />
+        <Modal 
+        delete={this.state.delete}
+        closeModal={this.closeModal}
+        deletePerson={deletePerson}
+        deleteEmploeeFromData={this.deleteEmploeeFromData}
         />
       </div>
     );

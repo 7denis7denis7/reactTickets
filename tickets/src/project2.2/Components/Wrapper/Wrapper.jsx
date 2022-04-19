@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import nextId from "react-id-generator";
 import TableHead from '../TableHead/TableHead'
 import TableBody from '../TableBody/TableBody'
 import Form from '../Form/Form'
@@ -22,23 +23,25 @@ class Wrapper extends Component {
       const tmpData = state.data.map(item => {
         if(item.id === id){
           item.visit = !item.visit;
+          return {...item}
+        }else{
+          return item
         }
-        return {...item}
       });
         return {
-          data: [...tmpData]
+          data: tmpData
         };
       })
-    }
+}
 
   
-  addNewPerson = (name, gender, age, id, e) => {
+  addNewPerson = (name, gender, age, e) => {
     e.preventDefault();
     const newPerson = {
       name,
       gender,
       age,
-      id,
+      id: nextId(),
       visit: false
     }
     this.setState((state) => {
