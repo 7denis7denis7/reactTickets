@@ -19,12 +19,18 @@ class Form extends Component {
       })
     }
     
+    submitForm = (e) => {
+      const {addNewPerson, } = this.props;
+      const {name, gender, age} = this.state;
+      e.preventDefault();
+      addNewPerson(name, gender, age);
+    }
  
     render() { 
       const {name, gender, age} = this.state;
       return (
         <div className={FormStyle.form}>
-          <form onSubmit={(e) => this.props.addNewPerson(name, gender, age, e)}>
+          <form onSubmit={this.submitForm}>
             <input className={FormStyle.input} value={name || ''} onChange={this.handleInput} placeholder='Имя' name='name' type='text'/>
             <input className={FormStyle.input} value={gender || ''} onChange={this.handleInput} placeholder='Пол' name='gender' type='text'/>
             <input className={FormStyle.input} value={age || ''} onChange={this.handleInput} placeholder='Возраст' name='age' type='number'/>

@@ -35,8 +35,7 @@ class Wrapper extends Component {
 }
 
   
-  addNewPerson = (name, gender, age, e) => {
-    e.preventDefault();
+  addNewPerson = (name, gender, age) => {
     const newPerson = {
       name,
       gender,

@@ -8,7 +8,7 @@ class TableBody extends Component {
 
   render() {  
     const {data, isVisit} = this.props;
-    const currentData = data.map(i => ({...i})); 
+    const currentData = [...data];
 
     return (
       <tbody className={TableBodyStyle.test}>
