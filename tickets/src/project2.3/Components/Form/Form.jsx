@@ -14,7 +14,7 @@ class Form extends Component {
     setNewValuesForm = (e) => {
       e.preventDefault();
       const {name, department} = this.state;
-      const {addNewPerson, editable} = this.props
+      const {addNewPerson, editable} = this.props;
       addNewPerson(name, department, editable);
       this.setState({
         name: null,
@@ -23,14 +23,14 @@ class Form extends Component {
     }
 
     componentDidUpdate(prevProps) {
-      if(this.props.editable !== prevProps.editable){
-        if(this.props.editPerson){
+      const {editable, editPerson} = this.props;
+      if(editable !== prevProps.editable){
+        if(editPerson){
           this.setState({
-            name: this.props.editPerson.name,
-            department: this.props.editPerson.department
+            name: editPerson.name,
+            department: editPerson.department
           })
         }
-
       }
     }
 

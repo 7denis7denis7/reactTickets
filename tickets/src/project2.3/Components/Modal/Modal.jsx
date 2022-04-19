@@ -10,10 +10,11 @@ class Modal extends Component {
     //Почему я не могу деструктурировать delete? 
     const {deletePerson, 
     closeModal, 
-    deleteEmploeeFromData } = this.props;
+    deleteEmploeeFromData,
+    deleted } = this.props;
     return (
-      <div className={this.props.delete ? `${ModalStyle.over} ${ModalStyle.overActive}` : ModalStyle.over}> 
-        <div className={this.props.delete  ? `${ModalStyle.modal} ${ModalStyle.modalActive}` : ModalStyle.modal}>
+      <div className={deleted ? `${ModalStyle.over} ${ModalStyle.overActive}` : ModalStyle.over}> 
+        <div className={deleted  ? `${ModalStyle.modal} ${ModalStyle.modalActive}` : ModalStyle.modal}>
           <div>
             Вы уверенны, что хотите удалить пользователя {deletePerson ? deletePerson.name : 'error'} ?
           </div>

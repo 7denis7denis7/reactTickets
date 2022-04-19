@@ -5,6 +5,7 @@ import SearchBarStyle from './SearchBar.module.scss'
 class SearchBar extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             search: null
         }

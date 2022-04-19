@@ -28,7 +28,7 @@ class TableBody extends Component {
                   <button onClick={(e) => setId(e,id)} name='editable'>Редактировать</button>
                 </td>
                 <td className={TableBodyStyle.text}>
-                  <button onClick={(e) => setId(e,id)} name='delete'>Удалить</button>
+                  <button onClick={(e) => setId(e,id)} name='deleted'>Удалить</button>
                 </td>
               </tr>
             )
