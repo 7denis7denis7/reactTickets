@@ -1,51 +1,79 @@
 import {Component} from 'react';
 import nextId from "react-id-generator";
-import SearchBar from '../SearchBar/SearchBar'
-import TableHead from '../TableHead/TableHead'
-import TableBody from '../TableBody/TableBody'
+import Table from '../Table/Table'
 import Form from '../Form/Form'
 import Modal from '../Modal/Modal'
 
 import WrapperStyle from './Wrapper.module.scss';
 
-
 class Wrapper extends Component {
   constructor(props) {
     super(props);
 
-    if (localStorage.getItem('data') === null) {
-      const dataArr =  [
-        {name: 'Lorem', department: 'разработка', id: 1, 'find': false},
-        {name: 'Abilisk', department: 'бухгалтерия', id: 2, 'find': false},
-        {name: 'Morem', department: 'менеджмент', id: 3, 'find': false}
-      ]
-      localStorage.setItem('data', JSON.stringify(dataArr))
-    }
+    this.setDefaultLS();
     
     this.state = {
       data : [],
       editable: null,
       deleted: null,
-      openModal: false
+      openModal: false,
+      finded: []
     }
   }
   
-
-
   componentDidMount() {
-    let data = localStorage.getItem('data');
+    this.setDefaultState();
+  }
+
+  componentDidUpdate() {
+    this.setLS('data', this.state.data);
+  }
+
+
+
+  setLS = (key, value) => {
+    if(typeof(Storage) !== 'undefined'){
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      }catch (e) {
+        if (e.number == 22) { 
+          alert('Локальное хранилище переполнено');
+        }
+      }
+    }
+  }
+
+  getLS = (key) => {
+    if(typeof(Storage) !== 'undefined'){
+      return localStorage.getItem(key);
+    }
+  }
+
+  setDefaultLS = () => {
+    if(typeof(Storage) !== 'undefined'){
+      if (this.getLS('data') === null) {
+        const dataArr =  [
+          {name: 'Lorem', department: 'разработка', id: 1},
+          {name: 'Abilisk', department: 'бухгалтерия', id: 2},
+          {name: 'Morem', department: 'менеджмент', id: 3}
+        ]
+        this.setLS('data', dataArr);
+      }
+    }
+  }
+
+
+  setDefaultState = () => {
+    let data = this.getLS('data');
     data = JSON.parse(data);   
     this.setState({
       data: data  
     })
   }
 
-  componentDidUpdate() {
-    localStorage.setItem('data', JSON.stringify(this.state.data));
-  }
-
   addNewPerson = (name, department, id) => {
-    const currentData = [...this.state.data];
+    const {data} = this.state;
+    let currentData = [...data];
     if(!id){
       const newPerson = {
         name,
@@ -55,10 +83,13 @@ class Wrapper extends Component {
       }
       currentData.push(newPerson);
     }else{
-      currentData.forEach((item)=>{
+      currentData = data.map(item => {
         if(item.id === id){
           item.name = name;
           item.department = department;
+          return {...item};
+        }else{
+          return item;
         }
       })
     }
@@ -72,23 +103,31 @@ class Wrapper extends Component {
 
   findEmployee = (e) => {
     const {data} = this.state;
-    let val = e.target.value.trim('');
+    let val = e.target.value.trim('').toLocaleLowerCase();
     if(val.length > 0){
+      const tmpFinded = [];
+      // Могу ли я использовать forEach? 
+      // По идее я не изменяю элементы массива
+      //  *************************************************************
+      //  *  data.forEach(item => {                                   *
+      //  *   if(item.name.toLocaleLowerCase().search(val) !== -1){   *
+      //  *      tmpFinded.push(item.id)                              *
+      //  *    }                                                      *
+      //  *  })                                                       *
+      //  *************************************************************                                           
       const tmpData = data.map(item => {
-        if(item.name.toLocaleLowerCase().search(val.toLocaleLowerCase()) === -1){
-          item.find = false;
-        }else{
-          item.find = true;
+        if(item.name.toLocaleLowerCase().search(val) !== -1){
+          tmpFinded.push(item.id)
         }
         return item;
       });
-      this.setState({data: tmpData})
+
+
+      this.setState({
+        finded: [...tmpFinded]
+      })
     }else{
-      const tmpData = data.map(item => {
-        item.find = false;
-        return item;
-      });
-      this.setState({data: tmpData})
+      this.setState({finded: []})
     }
   }
 
@@ -124,7 +163,7 @@ class Wrapper extends Component {
   }
 
   render() { 
-    const {data, editable, deleted} = this.state;
+    const {data, editable, deleted, finded} = this.state;
 
     const editPerson = data.find((item)=>{
       if(item.id === editable){
@@ -141,21 +180,19 @@ class Wrapper extends Component {
     return (
       <div className={WrapperStyle.container}>
         <h1 className={WrapperStyle.title}>Панель администратора</h1>
-        <SearchBar findEmployee={this.findEmployee}/>
-        <table className={WrapperStyle.table}>
-          <TableHead />
-          <TableBody
-            data={this.state.data}
-            setId={this.setId}
-          />
-        </table>
+        <Table 
+          findEmployee={this.findEmployee}
+          data={data}
+          setId={this.setId}
+          finded={finded}
+        />
         <Form 
           addNewPerson={this.addNewPerson}
-          editable={this.state.editable}
+          editable={editable}
           editPerson={editPerson}
         />
         <Modal 
-        deleted={this.state.deleted}
+        deleted={deleted}
         closeModal={this.closeModal}
         deletePerson={deletePerson}
         deleteEmploeeFromData={this.deleteEmploeeFromData}

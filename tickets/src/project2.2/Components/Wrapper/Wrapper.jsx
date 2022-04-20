@@ -18,6 +18,8 @@ class Wrapper extends Component {
       ]
     }
   }
+
+  
   isVisit = (id) => {
     this.setState((state) => {  
       const tmpData = state.data.map(item => {

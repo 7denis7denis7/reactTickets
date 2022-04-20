@@ -4,11 +4,12 @@ import TableBodyStyle from './TableBody.module.scss';
 class TableBody extends Component {
   constructor(props) {
     super(props);
+
   }
 
   render() {  
-    const currentData = [...this.props.data]
-    const {setId} = this.props
+    const {setId, data, finded} = this.props;
+    const currentData = [...data];
     return (
       <tbody className={TableBodyStyle.test}>
         {
@@ -17,11 +18,10 @@ class TableBody extends Component {
             const {
               name, 
               department,
-              find,
               id
-            } = item;
+            } = item; 
             return(
-              <tr key={id} className={find ? TableBodyStyle.active : ''}>
+              <tr key={id} className={finded.includes(id) ? TableBodyStyle.active : ''}>
                 <td className={TableBodyStyle.text}>{name}</td>
                 <td className={TableBodyStyle.text}>{department}</td>
                 <td className={TableBodyStyle.text}>
