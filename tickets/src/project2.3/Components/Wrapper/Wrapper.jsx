@@ -9,15 +9,12 @@ import WrapperStyle from './Wrapper.module.scss';
 class Wrapper extends Component {
   constructor(props) {
     super(props);
-
-    this.setDefaultLS();
     
     this.state = {
       data : [],
       editable: null,
       deleted: null,
       openModal: false,
-      finded: []
     }
   }
   
@@ -37,7 +34,7 @@ class Wrapper extends Component {
         localStorage.setItem(key, JSON.stringify(value));
       }catch (e) {
         if (e.number == 22) { 
-          alert('Локальное хранилище переполнено');
+          alert('Что-то пошло не так');
         }
       }
     }
@@ -45,23 +42,15 @@ class Wrapper extends Component {
 
   getLS = (key) => {
     if(typeof(Storage) !== 'undefined'){
-      return localStorage.getItem(key);
-    }
-  }
-
-  setDefaultLS = () => {
-    if(typeof(Storage) !== 'undefined'){
-      if (this.getLS('data') === null) {
-        const dataArr =  [
-          {name: 'Lorem', department: 'разработка', id: 1},
-          {name: 'Abilisk', department: 'бухгалтерия', id: 2},
-          {name: 'Morem', department: 'менеджмент', id: 3}
-        ]
-        this.setLS('data', dataArr);
+      try {
+        return localStorage.getItem(key);
+      }catch (e) {
+        if (e.number == 22) { 
+          alert('Что-то пошло не так');
+        }
       }
     }
   }
-
 
   setDefaultState = () => {
     let data = this.getLS('data');
@@ -73,7 +62,7 @@ class Wrapper extends Component {
 
   addNewPerson = (name, department, id) => {
     const {data} = this.state;
-    let currentData = [...data];
+    let currentData;
     if(!id){
       const newPerson = {
         name,
@@ -81,13 +70,12 @@ class Wrapper extends Component {
         id: nextId(),
         visit: false
       }
+      currentData = [...data]
       currentData.push(newPerson);
     }else{
       currentData = data.map(item => {
         if(item.id === id){
-          item.name = name;
-          item.department = department;
-          return {...item};
+          return { ...item, name, department};
         }else{
           return item;
         }
@@ -95,71 +83,38 @@ class Wrapper extends Component {
     }
     this.setState(() => {
       return {
-        data: [...currentData],
+        data: currentData,
         editable: null
       };
     })
   }
 
-  findEmployee = (e) => {
-    const {data} = this.state;
-    let val = e.target.value.trim('').toLocaleLowerCase();
-    if(val.length > 0){
-      const tmpFinded = [];
-      // Могу ли я использовать forEach? 
-      // По идее я не изменяю элементы массива
-      //  *************************************************************
-      //  *  data.forEach(item => {                                   *
-      //  *   if(item.name.toLocaleLowerCase().search(val) !== -1){   *
-      //  *      tmpFinded.push(item.id)                              *
-      //  *    }                                                      *
-      //  *  })                                                       *
-      //  *************************************************************                                           
-      const tmpData = data.map(item => {
-        if(item.name.toLocaleLowerCase().search(val) !== -1){
-          tmpFinded.push(item.id)
-        }
-        return item;
-      });
 
-
-      this.setState({
-        finded: [...tmpFinded]
-      })
-    }else{
-      this.setState({finded: []})
-    }
-  }
-
-  setId = (e, id) => {
+  setId = (elementName, id) => {
     this.setState({
-      [e.target.name] : id
+      [elementName] : id
     })
   }
 
-  closeModal = (e) => {
-    if(e.target.name === 'close'){
-      this.setState({
-        deleted: null
-      })
-    }
+  closeModal = () => {
+    this.setState({
+      deleted: null
+    })
   }
 
-  deleteEmploeeFromData = (e, id) => {
-    if(e.target.name === 'confirm'){
-      const personList = this.state.data.filter(item => {
-        if(item.id !== id){
-          return item;
-        }
-      })
-      this.setState(() => {
-        return {
-          data: personList,
-          deleted: null,
-          editable: null
-        };
-      })  
-    }
+  deleteEmploeeFromData = (id) => {
+    const personList = this.state.data.filter(item => {
+      if(item.id !== id){
+        return item;
+      }
+    })
+    this.setState(() => {
+      return {
+        data: personList,
+        deleted: null,
+        editable: null
+      };
+    })  
   }
 
   render() { 

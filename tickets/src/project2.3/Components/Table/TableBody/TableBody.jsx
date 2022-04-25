@@ -7,6 +7,7 @@ class TableBody extends Component {
 
   }
 
+
   render() {  
     const {setId, data, finded} = this.props;
     const currentData = [...data];
@@ -25,10 +26,10 @@ class TableBody extends Component {
                 <td className={TableBodyStyle.text}>{name}</td>
                 <td className={TableBodyStyle.text}>{department}</td>
                 <td className={TableBodyStyle.text}>
-                  <button onClick={(e) => setId(e,id)} name='editable'>Редактировать</button>
+                  <button onClick={(e) => setId(e.target.name, id)} name='editable'>Редактировать</button>
                 </td>
                 <td className={TableBodyStyle.text}>
-                  <button onClick={(e) => setId(e,id)} name='deleted'>Удалить</button>
+                  <button onClick={(e) => setId(e.target.name, id)} name='deleted'>Удалить</button>
                 </td>
               </tr>
             )

@@ -18,7 +18,7 @@ class Modal extends Component {
           <div>
             Вы уверенны, что хотите удалить пользователя {deletePerson ? deletePerson.name : 'error'} ?
           </div>
-          <button onClick={(e) => deleteEmploeeFromData(e, deletePerson.id)} name='confirm'>Подтвердить</button>
+          <button onClick={() => deleteEmploeeFromData(deletePerson.id)} name='confirm'>Подтвердить</button>
           <button onClick={closeModal} name='close'>Отменить</button>
         </div>
       </div>

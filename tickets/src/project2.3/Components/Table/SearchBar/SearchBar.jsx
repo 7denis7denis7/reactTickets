@@ -12,19 +12,21 @@ class SearchBar extends Component {
     }
 
     handleInput = (e) => {
+        const {findPerson} = this.props;
+        const {name, value} = e.target;
         this.setState({
-            [e.target.name] : e.target.value
+            [name] : value
         })
+        findPerson(e.target.value.trim('').toLocaleLowerCase())
     }
 
     render() { 
         const {search} = this.state;
-        const {findEmployee} = this.props;
         return (
             <input 
             placeholder='Поиск сотрудника' 
             name='search' value={search || ''}  
-            onChange={e => {this.handleInput(e); findEmployee(e)}}
+            onChange={this.handleInput}
             className={SearchBarStyle.input} 
             type="text"/>
         );
