@@ -17,7 +17,7 @@ class SearchBar extends Component {
         this.setState({
             [name] : value
         })
-        findPerson(e.target.value.trim('').toLocaleLowerCase())
+        findPerson(value.trim('').toLocaleLowerCase())
     }
 
     render() { 

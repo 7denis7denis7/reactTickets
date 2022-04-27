@@ -16,13 +16,13 @@ class Table extends Component {
 
   findPerson = (val) => {
     if(val.length > 0){
-      const tmpFinded = [];                             
-      const tmpData = this.props.data.map(item => {
+      
+      let tmpFinded = this.props.data.filter(item => {
         if(item.name.toLocaleLowerCase().search(val) !== -1){
-          tmpFinded.push(item.id)
+          return item
         }
-        return item;
-      });
+      }).map(item => item.id);
+
       this.setState({
         findId: [...tmpFinded]
       })
@@ -32,9 +32,8 @@ class Table extends Component {
   }
 
   render() { 
-    const {findEmployee, data, setId, finded} = this.props;
+    const {data, setId} = this.props;
     const {findId} = this.state
-
     return (
       <>
         <SearchBar findPerson={this.findPerson}/>
@@ -43,7 +42,7 @@ class Table extends Component {
             <TableBody
             data={data}
             setId={setId}
-            finded={findId}
+            findId={findId}
             />
         </table>
       </>

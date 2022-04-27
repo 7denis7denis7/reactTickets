@@ -43,7 +43,7 @@ class Wrapper extends Component {
   getLS = (key) => {
     if(typeof(Storage) !== 'undefined'){
       try {
-        return localStorage.getItem(key);
+        return JSON.parse(localStorage.getItem(key)); ;
       }catch (e) {
         if (e.number == 22) { 
           alert('Что-то пошло не так');
@@ -54,9 +54,11 @@ class Wrapper extends Component {
 
   setDefaultState = () => {
     let data = this.getLS('data');
-    data = JSON.parse(data);   
+    if(data === null){
+      this.setLS('data', [])
+    }
     this.setState({
-      data: data  
+      data  
     })
   }
 
@@ -70,8 +72,7 @@ class Wrapper extends Component {
         id: nextId(),
         visit: false
       }
-      currentData = [...data]
-      currentData.push(newPerson);
+      currentData = [...data, newPerson ]
     }else{
       currentData = data.map(item => {
         if(item.id === id){
@@ -118,7 +119,7 @@ class Wrapper extends Component {
   }
 
   render() { 
-    const {data, editable, deleted, finded} = this.state;
+    const {data, editable, deleted} = this.state;
 
     const editPerson = data.find((item)=>{
       if(item.id === editable){
@@ -136,18 +137,14 @@ class Wrapper extends Component {
       <div className={WrapperStyle.container}>
         <h1 className={WrapperStyle.title}>Панель администратора</h1>
         <Table 
-          findEmployee={this.findEmployee}
           data={data}
           setId={this.setId}
-          finded={finded}
         />
         <Form 
           addNewPerson={this.addNewPerson}
-          editable={editable}
           editPerson={editPerson}
         />
         <Modal 
-        deleted={deleted}
         closeModal={this.closeModal}
         deletePerson={deletePerson}
         deleteEmploeeFromData={this.deleteEmploeeFromData}

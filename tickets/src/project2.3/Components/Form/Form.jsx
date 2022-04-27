@@ -14,8 +14,8 @@ class Form extends Component {
     setNewValuesForm = (e) => {
       e.preventDefault();
       const {name, department} = this.state;
-      const {addNewPerson, editable} = this.props;
-      addNewPerson(name, department, editable);
+      const {addNewPerson, editPerson} = this.props;
+      addNewPerson(name, department, editPerson.id);
       this.setState({
         name: null,
         department: 'разработка'
@@ -23,8 +23,8 @@ class Form extends Component {
     }
 
     componentDidUpdate(prevProps) {
-      const {editable, editPerson} = this.props;
-      if(editable !== prevProps.editable){
+      const {editPerson} = this.props;
+      if(editPerson !== prevProps.editPerson){
         if(editPerson){
           this.setState({
             name: editPerson.name,
@@ -43,7 +43,7 @@ class Form extends Component {
 
     render() { 
       const {name, department} = this.state;
-      const {editable} = this.props
+      const {editPerson} = this.props;
       return (
         <div className={FormStyle.form}>
           <form onSubmit={this.setNewValuesForm}>
@@ -59,7 +59,7 @@ class Form extends Component {
                 менеджмент
               </option>
             </select>
-            <button className={FormStyle.button}>{editable ? 'save' : 'Добавить гостя'}</button>
+            <button className={FormStyle.button}>{editPerson ? 'save' : 'Добавить гостя'}</button>
           </form>
         </div>
       );

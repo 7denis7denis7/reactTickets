@@ -9,7 +9,7 @@ class TableBody extends Component {
 
 
   render() {  
-    const {setId, data, finded} = this.props;
+    const {setId, data, findId} = this.props;
     const currentData = [...data];
     return (
       <tbody className={TableBodyStyle.test}>
@@ -22,7 +22,7 @@ class TableBody extends Component {
               id
             } = item; 
             return(
-              <tr key={id} className={finded.includes(id) ? TableBodyStyle.active : ''}>
+              <tr key={id} className={findId.includes(id) ? TableBodyStyle.active : ''}>
                 <td className={TableBodyStyle.text}>{name}</td>
                 <td className={TableBodyStyle.text}>{department}</td>
                 <td className={TableBodyStyle.text}>
