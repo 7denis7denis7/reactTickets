@@ -18,7 +18,7 @@ class Table extends Component {
     if(val.length > 0){
       
       let tmpFinded = this.props.data.filter(item => {
-        if(item.name.toLocaleLowerCase().search(val) !== -1){
+        if(item.name.toLocaleLowerCase().includes(val)){
           return item
         }
       }).map(item => item.id);

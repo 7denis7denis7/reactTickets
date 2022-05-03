@@ -7,7 +7,7 @@ class Form extends Component {
 
       this.state = {
         name: null,
-        department: 'разработка',
+        department: 'development',
       }
     }
 
@@ -15,10 +15,14 @@ class Form extends Component {
       e.preventDefault();
       const {name, department} = this.state;
       const {addNewPerson, editPerson} = this.props;
-      addNewPerson(name, department, editPerson.id);
+      if(editPerson === undefined){
+        addNewPerson(name, department, null);
+      }else{
+        addNewPerson(name, department, editPerson.id);
+      }
       this.setState({
         name: null,
-        department: 'разработка'
+        department: 'development'
       })
     }
 
@@ -49,14 +53,14 @@ class Form extends Component {
           <form onSubmit={this.setNewValuesForm}>
             <input className={FormStyle.input} value={name || ''} required onChange={this.handleElement} placeholder='Имя' name='name' type='text'/>
             <select name="department" value={department} className={FormStyle.select} name='department' onChange={this.handleElement}>
-              <option value="разработка">
-                разработка
+              <option value="development">
+                development
               </option>
-              <option value="бухгалтерия">
-                бухгалтерия
+              <option value="accounting">
+                accounting
               </option>
-              <option value="менеджмент">
-                менеджмент
+              <option value="management">
+                management
               </option>
             </select>
             <button className={FormStyle.button}>{editPerson ? 'save' : 'Добавить гостя'}</button>

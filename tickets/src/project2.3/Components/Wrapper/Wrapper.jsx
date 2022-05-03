@@ -13,8 +13,7 @@ class Wrapper extends Component {
     this.state = {
       data : [],
       editable: null,
-      deleted: null,
-      openModal: false,
+      deleted: null
     }
   }
   
