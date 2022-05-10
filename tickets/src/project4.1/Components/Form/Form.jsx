@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import FormStyle from './Form.module.scss';
+import Input from '../Input/Input'
 
 function Form(props) {
   const [name, setName] = useState(null);
-  const [gender, setGender] = useState(null);
+  const [gender, setGender] = useState('male');
   const [age, setAge] = useState(null);
 
   const submitForm = (e) => {
@@ -14,23 +15,27 @@ function Form(props) {
 
   return (
     <form>
-        <input
-        onChange={e => setName(e.target.value)}
-        value={name || ''}
-        type="text"          
-        />
-        <input 
-        onChange={e => setGender(e.target.value)}
-        value={gender || ''}
-        type="text"
-        />
-        <input
-        onChange={e => setAge(e.target.value)}
-        value={age || ''}
-        type="number"/>
-        <button onClick={submitForm}>
-          Добавить
-        </button>
+      <Input
+      placeholder='Имя'
+      type='text'
+      value={name || ''}
+      changeValue={setName}
+      />
+      <select
+      value={gender || ''}
+      onChange={e => setGender(e.target.value)}>
+        <option value="male">Мужской</option>
+        <option value="female">Женский</option>
+      </select>
+      <Input
+      placeholder='Возраст'
+      type='number'
+      value={age || ''}
+      changeValue={setAge}
+      />
+      <button onClick={submitForm}>
+        Добавить
+      </button>
     </form>
   );
 }

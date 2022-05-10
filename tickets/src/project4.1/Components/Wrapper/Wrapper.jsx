@@ -17,8 +17,7 @@ function Wrapper() {
   const isVisit = (id) => {
     const tmpData = list.map(item => {
       if(item.id === id){
-        item.visit = !item.visit;
-        return {...item}
+        return {...item, visit: !item.visit}
       }else{
         return item;
       }

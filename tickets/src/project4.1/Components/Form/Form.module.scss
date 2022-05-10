@@ -15,7 +15,7 @@ form{
     background: lightgray;
     border: 1px solid black;
     border-top: 0;
-    input{
+    select{
         @include reset-form-element;
         width: 200px;
         padding: 0 15px;
