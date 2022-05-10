@@ -1,0 +1,19 @@
+table{
+    width: 100%;
+    border: 1px solid;
+    border-collapse: collapse;
+    border-spacing: 0;
+    thead{
+        tr{
+            td{
+                font-weight: bold;
+            }
+        }
+    }
+    tr{
+        td{
+            border-bottom: 1px solid gray;
+            padding: 10px 15px;
+        }
+    }
+}
