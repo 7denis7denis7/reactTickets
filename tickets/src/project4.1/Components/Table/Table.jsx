@@ -2,6 +2,7 @@ import TableStyle from './Table.module.scss'
 
 function Table(props) {
   const {list, isVisit} = props;
+  const currentData = [...list];
   return (
     <table>
       <thead>
@@ -14,7 +15,7 @@ function Table(props) {
       </thead>
       <tbody>
         {
-          list.sort((a,b) => a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1)
+          currentData.sort((a,b) => a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1)
           .sort((a,b) => a.visit > b.visit ? 1 : -1)
           .map(item=> {
             const {
