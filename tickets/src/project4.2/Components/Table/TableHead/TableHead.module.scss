@@ -1,0 +1,16 @@
+thead{
+  tr{
+    td{
+      font-size: 18px;
+      font-weight: 600;
+      background: lightgray;
+      padding: 5px 10px;
+      &:first-child{
+        border-radius: 8px 0 0 0;
+      }
+      &:last-child{
+        border-radius: 0 8px 0 0;
+      }
+    }
+  }
+}

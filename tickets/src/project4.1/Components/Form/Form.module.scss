@@ -15,22 +15,22 @@ form{
     background: lightgray;
     border: 1px solid black;
     border-top: 0;
-    select{
-        @include reset-form-element;
-        width: 200px;
-        padding: 0 15px;
+    input{
         margin-right: 20px;
     }
-    button{
-        @include reset-form-element;
-        width: 150px;
-        background: white;
-        cursor: pointer;
-        transition: background .2s ease-in-out, color .2s ease-in-out;
-        &:hover{
-            color: white;
-            background: lightseagreen;
-            transition: background .2s ease-in-out, color .2s ease-in-out;
-        }
+    select{
+        margin-right: 20px;
     }
+    // button{
+    //     @include reset-form-element;
+    //     width: 150px;
+    //     background: white;
+    //     cursor: pointer;
+    //     transition: background .2s ease-in-out, color .2s ease-in-out;
+    //     &:hover{
+    //         color: white;
+    //         background: lightseagreen;
+    //         transition: background .2s ease-in-out, color .2s ease-in-out;
+    //     }
+    // }
 }

@@ -52,7 +52,7 @@ class Form extends Component {
         <div className={FormStyle.form}>
           <form onSubmit={this.setNewValuesForm}>
             <input className={FormStyle.input} value={name || ''} required onChange={this.handleElement} placeholder='Имя' name='name' type='text'/>
-            <select name="department" value={department} className={FormStyle.select} name='department' onChange={this.handleElement}>
+            <select name="department" value={department} className={FormStyle.select} onChange={this.handleElement}>
               <option value="development">
                 development
               </option>

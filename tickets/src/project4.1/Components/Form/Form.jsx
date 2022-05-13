@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import FormStyle from './Form.module.scss';
-import Input from '../Input/Input'
+import Input from '../../../Input/Input'
+import Button from '../../../Button/Button'
+import Select from '../../../Select/Select'
 
 function Form(props) {
   const [name, setName] = useState(null);
@@ -13,29 +15,29 @@ function Form(props) {
     addNewPerson(name, gender, age);
   }
 
+
   return (
     <form>
-      <Input
-      placeholder='Имя'
-      type='text'
-      value={name || ''}
-      changeValue={setName}
+      <Input 
+        placeholder='Имя'
+        value={name}
+        action={setName}
       />
-      <select
-      value={gender || ''}
-      onChange={e => setGender(e.target.value)}>
-        <option value="male">Мужской</option>
-        <option value="female">Женский</option>
-      </select>
-      <Input
-      placeholder='Возраст'
-      type='number'
-      value={age || ''}
-      changeValue={setAge}
+      <Select 
+        value={gender || ''}
+        action={e => setGender(e.target.value)}
+        data={['male', 'female']}
       />
-      <button onClick={submitForm}>
-        Добавить
-      </button>
+      <Input 
+        type='number'
+        placeholder='Возраст'
+        value={age}
+        action={setAge}
+      />
+      <Button
+        text='Добавить'
+        action={submitForm}
+      />
     </form>
   );
 }
