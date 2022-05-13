@@ -24,8 +24,8 @@ function Form(props) {
         action={setName}
       />
       <Select 
-        value={gender || ''}
-        action={e => setGender(e.target.value)}
+        value={gender}
+        action={setGender}
         data={['male', 'female']}
       />
       <Input 
