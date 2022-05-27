@@ -4,9 +4,7 @@ import TableBodyStyle from './TableBody.module.scss';
 class TableBody extends Component {
   constructor(props) {
     super(props);
-
   }
-
 
   render() {  
     const {setId, data, findId} = this.props;

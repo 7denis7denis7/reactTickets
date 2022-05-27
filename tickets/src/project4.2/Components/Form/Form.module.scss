@@ -1,0 +1,15 @@
+.wrapper{
+  background: lightgray;
+  padding: 20px 0 10px 10px;
+  border-radius: 0 0 8px 8px;
+  form{
+    display: flex;
+    align-items: center;
+    input{
+      margin-right: 10px;
+    }
+    select{
+      margin-right: 10px;
+    }
+  }
+}

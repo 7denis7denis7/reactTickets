@@ -10,6 +10,8 @@ class Modal extends Component {
     const {deletePerson, 
     closeModal, 
     deleteEmploeeFromData} = this.props;
+
+
     return (
       <div className={deletePerson ? `${ModalStyle.over} ${ModalStyle.overActive}` : ModalStyle.over}> 
         <div className={deletePerson  ? `${ModalStyle.modal} ${ModalStyle.modalActive}` : ModalStyle.modal}>

@@ -2,14 +2,16 @@ import { useState } from 'react';
 import InputStyle from './Input.module.scss'
 
 function Input(props) {
-  const {type='text', placeholder, action} = props;
+  const {type='text', placeholder, action, value} = props;
 
   const [valueInput, setValueInput] = useState(null)
 
   const handleInput = (e) => {
     const value = e.target.value;
     setValueInput(value);
-    action(value)
+    if(action){
+      action(value)
+    }
   }
   
   return (
@@ -18,7 +20,7 @@ function Input(props) {
       type={type}
       placeholder={placeholder}
       onChange={handleInput}
-      value={valueInput || ''}
+      value={value || ''}
     />
 
   );

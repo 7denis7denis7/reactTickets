@@ -1,0 +1,11 @@
+button{
+  padding: 5 10px;
+  text-align: center;
+  border: 1px solid #333;
+  background: white;
+  color: black;
+  &:active, &:focus{
+    outline-width: 0px;
+    outline-color: transparent;
+  }
+}

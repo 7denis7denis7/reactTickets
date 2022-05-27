@@ -4,9 +4,10 @@ function TableHead() {
   return (
     <thead>
       <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
+        <td>Name</td>
+        <td>Department</td>
+        <td>Edit</td>
+        <td>Delete</td>
       </tr>
     </thead>
   );

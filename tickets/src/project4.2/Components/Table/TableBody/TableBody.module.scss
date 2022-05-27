@@ -1,6 +1,5 @@
 tbody{
   tr{
-
     td{
       font-size: 16px;
       color: #333;
@@ -14,4 +13,8 @@ tbody{
       }
     }
   }
+}
+
+.active{
+  background: rgba(1,250,13, .1);
 }
