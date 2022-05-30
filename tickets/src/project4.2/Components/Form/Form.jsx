@@ -17,19 +17,12 @@ function Form(props) {
 
   const setNewValuesForm = (e) => {
     e.preventDefault();
-    if(editPerson === undefined){
-      addNewPerson(name, department, null);
-    }else{
-      addNewPerson(name, department, editPerson.id);
-    }
+    
+    addNewPerson(name, department, editPerson === undefined ? null : editPerson.id);
 
-    setName(()=>{
-      return null;
-    })
+    setName(null);
 
-    setDepartment(()=>{
-      return 'development';
-    })
+    setDepartment('development');
 
   }
 
@@ -55,17 +48,10 @@ function Form(props) {
           data={departments}
           action={setDepartment}
         />
-        {editPerson ? 
-          <Button 
-            type='submit'
-            text='Сохранить'
-          /> 
-          :
-          <Button 
-            type='submit'
-            text='Добавить сотрудника'
-          />
-        }
+        <Button 
+          type='submit'
+          text={editPerson ? 'Сохранить' : 'Добавить сотрудника'}
+        /> 
       </form>
     </div>
   );

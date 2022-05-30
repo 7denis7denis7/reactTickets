@@ -10,10 +10,13 @@ function Table(props) {
   const {dataBase, setId} = props;
 
   const [findId, setFindId] = useState([]);
+  const [searchValue, setSearchValue] = useState(null);
 
 
   const findPerson = (val) => {
+    setSearchValue(val)
     if(val.length > 0){
+
 
       let tmpFinded = dataBase.filter(item => {
         if(item.name.toLocaleLowerCase().includes(val)){
@@ -21,13 +24,9 @@ function Table(props) {
         }
       }).map(item => item.id);  
 
-      setFindId(()=>{
-        return [...tmpFinded]
-      })
+      setFindId([...tmpFinded])
     }else{
-      setFindId(()=>{
-        return [];
-      })
+      setFindId([])
     }
   }
 
@@ -37,6 +36,7 @@ function Table(props) {
         type={'text'}
         placeholder={'Search'}
         action={findPerson}
+        value={searchValue}
       />
       <table>
         <TableHead/>

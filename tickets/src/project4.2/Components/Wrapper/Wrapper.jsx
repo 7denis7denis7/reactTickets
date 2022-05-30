@@ -7,15 +7,43 @@ import Form from '../Form/Form'
 import Modal from '../Modal/Modal'
 
 
+const getLS = (key) => {
+  if(typeof(Storage) !== 'undefined'){
+    try {
+      return JSON.parse(localStorage.getItem(key));
+    }catch (e) {
+      if (e.number == 22) { 
+        alert('Что-то пошло не так');
+      }
+    }
+  }
+}
+
+const setLS = (key, value) => {
+  if(typeof(Storage) !== 'undefined'){
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    }catch (e) {
+      if (e.number == 22) { 
+        alert('Что-то пошло не так');
+      }
+    }
+  }
+}
+
+
 function Wrapper() {
-  const [dataBase, setdataBase] = useState([]);
+  const [dataBase, setdataBase] = useState(()=>{
+    let data = getLS('data');
+    if(data === null){
+      return [];
+    }else{
+      return data;
+    }
+  });
   const [editable, setEditable] = useState(null);
   const [deleted, setDeleted] = useState(null);
   const [currentId, setCurrentId] = useState(1);
-
-  useEffect(()=>{
-    setDefaultState();
-  },[])
 
 
   const setDefaultState = () => {
@@ -23,39 +51,15 @@ function Wrapper() {
     if(data === null){
       setLS('data', [])
     }else{
-      const idFromStorage = data[data.length - 1]?.id;
+      const idFromStorage = new Date().getTime();
       if(idFromStorage){
-        setCurrentId(idFromStorage + 1);
+        setCurrentId(idFromStorage);
       }
       setdataBase(data);
     }
-
-    
   }
 
-  const getLS = (key) => {
-    if(typeof(Storage) !== 'undefined'){
-      try {
-        return JSON.parse(localStorage.getItem(key));
-      }catch (e) {
-        if (e.number == 22) { 
-          alert('Что-то пошло не так');
-        }
-      }
-    }
-  }
 
-  const setLS = (key, value) => {
-    if(typeof(Storage) !== 'undefined'){
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      }catch (e) {
-        if (e.number == 22) { 
-          alert('Что-то пошло не так');
-        }
-      }
-    }
-  }
 
 
   const addNewPerson = (name, department, id) => {
@@ -80,11 +84,8 @@ function Wrapper() {
     }
 
     setdataBase(currentData);
-    setLS('data', currentData);
 
-    setEditable(()=>{
-      return null;
-    })
+    setEditable(null);
   }
 
 
@@ -106,7 +107,7 @@ function Wrapper() {
     }
   })
 
-  const deletePerson = dataBase.find((item)=>{
+  const personToDelete = dataBase.find((item)=>{
     if(item.id === deleted){
       return item;
     }
@@ -120,11 +121,19 @@ function Wrapper() {
     })
 
     setdataBase(personList);
-    setLS('data', personList);
 
     setDeleted(null);
     setEditable(null);
   }
+
+
+  useEffect(()=>{
+    setDefaultState();
+  },[])
+
+  useEffect(()=> {
+    setLS('data', dataBase);
+  }, [dataBase])
 
 
   return (  
@@ -134,13 +143,12 @@ function Wrapper() {
         setId={setId}
       />
       <Form
-        dataBase={dataBase}
         addNewPerson={addNewPerson}
         editPerson={editPerson}
       />
       <Modal 
         closeModal={closeModal}
-        deletePerson={deletePerson}
+        personToDelete={personToDelete}
         deleteEmploeeFromData={deleteEmploeeFromData}
       />
     </div>

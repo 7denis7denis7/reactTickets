@@ -4,11 +4,9 @@ import InputStyle from './Input.module.scss'
 function Input(props) {
   const {type='text', placeholder, action, value} = props;
 
-  const [valueInput, setValueInput] = useState(null)
 
   const handleInput = (e) => {
     const value = e.target.value;
-    setValueInput(value);
     if(action){
       action(value)
     }
