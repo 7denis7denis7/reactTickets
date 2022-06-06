@@ -34,31 +34,10 @@ const setLS = (key, value) => {
 
 function Wrapper() {
   const [dataBase, setdataBase] = useState(()=>{
-    let data = getLS('data');
-    if(data === null){
-      return [];
-    }else{
-      return data;
-    }
+    return getLS('data');
   });
   const [editable, setEditable] = useState(null);
   const [deleted, setDeleted] = useState(null);
-  const [currentId, setCurrentId] = useState(1);
-
-
-  const setDefaultState = () => {
-    let data = getLS('data');
-    if(data === null){
-      setLS('data', [])
-    }else{
-      const idFromStorage = new Date().getTime();
-      if(idFromStorage){
-        setCurrentId(idFromStorage);
-      }
-      setdataBase(data);
-    }
-  }
-
 
 
 
@@ -68,10 +47,9 @@ function Wrapper() {
       const newPerson = {
         name,
         department,
-        id: currentId,
+        id: new Date().getTime(),
         visit: false
       }
-      setCurrentId(prev => prev + 1)
       currentData = [...dataBase, newPerson ]
     }else{
       currentData = dataBase.map(item => {
@@ -127,12 +105,17 @@ function Wrapper() {
   }
 
 
-  useEffect(()=>{
-    setDefaultState();
-  },[])
 
   useEffect(()=> {
-    setLS('data', dataBase);
+
+    let data = getLS('data');
+    if(data === null){
+      setLS('data', [])
+    }else{
+      // setdataBase(data);
+      setLS('data', dataBase);
+    }
+
   }, [dataBase])
 
 
