@@ -10,7 +10,11 @@ import Modal from '../Modal/Modal'
 const getLS = (key) => {
   if(typeof(Storage) !== 'undefined'){
     try {
-      return JSON.parse(localStorage.getItem(key));
+      if(localStorage.getItem(key) === null){
+        setLS('data', [])
+      }else{
+        return JSON.parse(localStorage.getItem(key));
+      }
     }catch (e) {
       if (e.number == 22) { 
         alert('Что-то пошло не так');
@@ -107,15 +111,7 @@ function Wrapper() {
 
 
   useEffect(()=> {
-
-    let data = getLS('data');
-    if(data === null){
-      setLS('data', [])
-    }else{
-      // setdataBase(data);
-      setLS('data', dataBase);
-    }
-
+    setLS('data', dataBase);
   }, [dataBase])
 
 
