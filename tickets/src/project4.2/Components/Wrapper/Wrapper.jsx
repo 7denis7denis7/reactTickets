@@ -10,11 +10,7 @@ import Modal from '../Modal/Modal'
 const getLS = (key) => {
   if(typeof(Storage) !== 'undefined'){
     try {
-      if(localStorage.getItem(key) === null){
-        setLS('data', [])
-      }else{
-        return JSON.parse(localStorage.getItem(key));
-      }
+      return JSON.parse(localStorage.getItem(key));
     }catch (e) {
       if (e.number == 22) { 
         alert('Что-то пошло не так');
@@ -37,9 +33,7 @@ const setLS = (key, value) => {
 
 
 function Wrapper() {
-  const [dataBase, setdataBase] = useState(()=>{
-    return getLS('data');
-  });
+  const [dataBase, setdataBase] = useState(()=> getLS('data') || []);
   const [editable, setEditable] = useState(null);
   const [deleted, setDeleted] = useState(null);
 
@@ -71,7 +65,7 @@ function Wrapper() {
   }
 
 
-  const setId = (elementName, id) => {
+  const setId = (elementName, id) => { 
     if(elementName === 'deleted'){
       setDeleted(id)
     }else{
@@ -110,9 +104,7 @@ function Wrapper() {
 
 
 
-  useEffect(()=> {
-    setLS('data', dataBase);
-  }, [dataBase])
+  useEffect(()=> setLS('data', dataBase), [dataBase])
 
 
   return (  
