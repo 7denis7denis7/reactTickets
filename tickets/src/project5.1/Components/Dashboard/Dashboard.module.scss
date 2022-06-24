@@ -1,0 +1,38 @@
+.dashboard{
+  margin-top: 30px;
+}
+
+.title{
+  font-size: 42px;
+  color: #000000;
+  text-align: center;
+  position: relative;
+  background: #fff;
+}
+
+.wrapper{
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  img{
+    width: 190px;
+    height: 190px;
+    object-fit: cover;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    &:hover{
+      box-shadow: 1px 2px 15px 7px #82B5FF;
+      transition: .2s ease-in-out;
+    }
+  }
+}
+
+.button{
+  display: block;
+  width: 200px;
+  height: 40px;
+  margin: 60px auto 0 auto;
+}
