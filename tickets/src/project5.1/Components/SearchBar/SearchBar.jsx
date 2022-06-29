@@ -1,20 +1,22 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import SearchBarCSS from './SearchBar.module.scss';
 
 import Input from '../../../Input/Input';
 
 function SearchBar(props) {
 
-  const {action, setap, value} = props;
+  const {setup, value} = props;
+
+  const [input, setInput] = useState(value);
 
 
   useEffect(() => {
     let timeout;
-    timeout = setTimeout(action, 500);
+    timeout = setTimeout(() => setup(input), 500);
     return function() {
       clearTimeout(timeout);
     }
-  }, [value]);
+  }, [input]);
 
 
   return (
@@ -22,8 +24,8 @@ function SearchBar(props) {
       <Input 
         type='text'
         placeholder='Search images'
-        action={e => setap(e)}
-        value={value}
+        action={setInput}
+        value={input}
       />
     </form>
   );

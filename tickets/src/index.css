@@ -7,6 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* background: #000; */
 }
+.no-scroll{
+  overflow: hidden;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -24,11 +24,11 @@ function Dashboard(props) {
           <Button 
             className={DashboardCSS.button}
             text='Load more'
-            action={() => more()}
+            action={more}
             name='load'
           />
         : 
-        ''
+        null
       }
     </div>
   );
