@@ -14,15 +14,21 @@ function Wrapper() {
   const [modalImage, setModalImage] = useState(null);
 
 
-  const closeModal = () => {
-    document.body.classList.remove("no-scroll");
-    setModalImage(null);
-  }
-
   const sendRequest = (val='', localPage=1) => {
     const params = val.trim('').replace(/ /ig, '+');
     const url = `https://pixabay.com/api/?key=28191304-3f691a8fd6738ad4907375e39&q=${params}&image_type=photo&page=${localPage}`;
-    getImages(url, localPage, setData, setPage);
+
+    getImages(url)
+    .then(response => {
+     if(localPage === 1){
+        setData(response.data.hits)
+      }else{
+        setData(prevState => [...prevState, ...response.data.hits])
+      }
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
   }
 
   useEffect(()=>{
@@ -34,10 +40,8 @@ function Wrapper() {
   }, [page]);
 
 
-
   const setItemImage = (e) => {
     setModalImage(e.target.src);
-    document.body.classList.add("no-scroll");
   }
 
   return (
@@ -45,7 +49,7 @@ function Wrapper() {
       <SearchBar setup={setSearch} value={search}/>
       <Dashboard data={data} action={setItemImage} more={() => setPage(prev => prev + 1)}/>
       {modalImage &&
-        <Modal modalImage={modalImage} action={closeModal} />
+        <Modal modalImage={modalImage} action={setModalImage}/>
       }
     </div>
   );

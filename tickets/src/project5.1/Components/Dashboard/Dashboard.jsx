@@ -8,7 +8,7 @@ function Dashboard(props) {
 
   return (
     <div className={DashboardCSS.dashboard}>
-      <h2 className={DashboardCSS.title}>{data.length ? 'Images' : ''}</h2>
+      <h2 className={DashboardCSS.title}>{data.length ? 'Images' : null}</h2>
       <div className={DashboardCSS.wrapper}>
         {
           data.map(item => {
