@@ -15,10 +15,7 @@ function Wrapper() {
 
 
   const sendRequest = (val='', localPage=1) => {
-    const params = val.trim('').replace(/ /ig, '+');
-    const url = `https://pixabay.com/api/?key=28191304-3f691a8fd6738ad4907375e39&q=${params}&image_type=photo&page=${localPage}`;
-
-    getImages(url)
+    getImages(val, localPage)
     .then(response => {
      if(localPage === 1){
         setData(response.data.hits)
