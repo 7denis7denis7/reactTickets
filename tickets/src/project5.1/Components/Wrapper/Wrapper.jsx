@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import WrapperCSS from './Wrapper.module.scss';
 
 import SearchBar from '../SearchBar/SearchBar';
@@ -31,6 +31,13 @@ function Wrapper() {
     });
   }
 
+
+  const closeModal = useCallback(() => {
+    setModalImage(null);
+  }, []);
+
+
+
   useEffect(()=>{
     sendRequest(search);
   }, [search]);
@@ -38,7 +45,6 @@ function Wrapper() {
   useEffect(()=>{
     if(page !== 1) sendRequest(search, page);
   }, [page]);
-
 
   const setItemImage = (e) => {
     setModalImage(e.target.src);
@@ -48,9 +54,7 @@ function Wrapper() {
     <div className={WrapperCSS.wrapper}>
       <SearchBar setup={setSearch} value={search}/>
       <Dashboard data={data} action={setItemImage} more={() => setPage(prev => prev + 1)}/>
-      {modalImage &&
-        <Modal modalImage={modalImage} action={setModalImage}/>
-      }
+      <Modal modalImage={modalImage} action={closeModal}/>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import ModalCSS from './Modal.module.scss';
 import cn from 'classnames';
 import close from '../../../icons/close.svg'
@@ -5,23 +6,28 @@ import close from '../../../icons/close.svg'
 function Modal(props) {
   const {modalImage, action} = props;
 
-  const closeModal = () => {
-    document.body.classList.remove("no-scroll");
-    action(null);
-  }
+  useEffect(()=>{
+    if(modalImage !== null){
+      document.body.classList.add("no-scroll");
+    }
+    
+    return () => {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [modalImage]);
 
-  return (
+  return modalImage !== null ? (
     <>
-      {modalImage ? document.body.classList.add("no-scroll") : null}
-      <div className={modalImage ? cn(ModalCSS.modal, ModalCSS.modal__active) : ModalCSS.modal}>
+      <div className={cn(ModalCSS.modal, {[ModalCSS.modal__active] : modalImage !== null})}>
         <div className={ModalCSS.modal__inner}>
-          <img className={ModalCSS.modal__close} src={close} onClick={closeModal} alt="close"/>
+          <img className={ModalCSS.modal__close} src={close} onClick={action} alt="close"/>
           <img className={ModalCSS.modal__image} src={modalImage} alt="image"/>
         </div>
       </div>
-    </>
-    
-  );
+    </> 
+  ) 
+  : null; 
+
 }
 
 export default Modal;
