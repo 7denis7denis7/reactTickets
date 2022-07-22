@@ -1,0 +1,61 @@
+.modal{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0, 0.5);
+  backdrop-filter: blur(5px);
+  display: none;
+  &__active{
+    display: flex;
+  }
+  &__wrapper{
+    width: 500px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    position: relative;
+  }
+  &__close{
+    cursor: pointer;
+    filter: contrast(0);
+    transform: rotate(0deg) scale(1);
+    width: 20px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    transition: .2s ease-in-out;
+    &:hover{
+      transform: rotate(90deg) scale(1.2);
+      transition: .2s ease-in-out;
+    }
+  }
+  &__title{
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  &__button{
+    width: 100%;
+    color: green;
+    border-color: green;
+    &:hover{
+      color: white;
+      background: green;
+    }
+    &:last-child{
+      margin-top: 15px;
+      color: red;
+      border-color: red;
+      &:hover{
+        color: white;
+        background: red;
+      }
+    }
+  }
+}

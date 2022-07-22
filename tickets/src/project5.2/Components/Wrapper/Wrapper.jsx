@@ -1,28 +1,103 @@
-import {useState} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import WrapperStyle from './Wrapper.module.scss';
+
+import deleteFromServer from '../request/delete'
+
+import getContact from '../request/getContact';
+
 
 import List from '../List/List';
 import ModalForm from '../ModalForm/ModalForm';
+import DeleteContact from '../DeleteModal/DeleteModal';
+import Contact from '../Contact/Contact';
 
-const data = [
-  {name: 'John', surname: 'Lorem', number: '098123528', id: 1},
-  {name: 'Elon', surname: 'Ipsum', number: '096352128', id: 2},
-  {name: 'Bill', surname: 'Sit', number: '095281238', id: 3},
-  {name: 'Tim', surname: 'Amore', number: '092528123', id: 4}
-]
 
 function Wrapper() {
   const [modal, setModal] = useState(false);
-  const [contacts, setContacts] = useState(data);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [contacts, setContacts] = useState([]);
+  const [currentContact, setCurrentContact] = useState(null);
 
-  const toggleModal = () => {
-    setModal(!modal);
+  const updateContacts = (obj, id) => {
+    const tempContacts = contacts.map(item => {
+      if(item.id === id){
+        obj.id = id;
+        return obj;
+      }else{
+        return item;
+      }
+    });
+
+    setContacts(tempContacts);
   }
+
+  const updateCurrent = (obj) => {
+    setCurrentContact(obj)
+  }
+
+
+  const toggleModal = useCallback(()=>{
+    setModal(!modal);
+  }, [modal]);
+
+  const toggleModalDelete = useCallback(()=>{
+    setModalDelete(!modalDelete);
+  }, [modalDelete]);
+
+  const addNewContact = useCallback((newContact)=>{
+    setContacts(prev => [...prev, ...newContact]);
+  }, [contacts]);
+
+  const chooseContact = useCallback((item)=> {
+      setCurrentContact({...item});
+  }, [currentContact])
+
+
+  const deleteContact = (id) => {
+    const tempContacts = contacts.filter(item => {
+      if(item.id !== id){
+        return item;
+      }
+    });
+
+    deleteFromServer(id)
+    .then(function (response) {})
+    .catch(function (error) {
+      console.log(error);
+    });
+
+    setCurrentContact(null);
+    toggleModalDelete();
+    setContacts(tempContacts);
+  } 
+
+  const goBack = () => {
+    setCurrentContact(null)
+  }
+
+  useEffect(()=>{
+    getContact()
+    .then(function (response) {
+      setContacts(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }, []);
 
   return (
     <div className={WrapperStyle.wrapper}>
-      <List contacts={contacts} action={toggleModal}/>
-      <ModalForm modal={modal}/>
+      <h2>List of contacts</h2>
+      {!currentContact &&
+        <List contacts={contacts} action={toggleModal} chooseContact={chooseContact}/>
+      }
+      {currentContact &&
+        <Contact contact={currentContact} action={toggleModal} toggleModal={toggleModalDelete} goBack={goBack} />
+      }
+      {modal &&
+        <ModalForm modal={modal} action={toggleModal} addContact={addNewContact} contact={currentContact} updateContacts={updateContacts} updateCurrent={updateCurrent}/>
+      }
+      <DeleteContact modal={modalDelete} toggleModal={toggleModalDelete} action={() => deleteContact(currentContact.id)}/>
     </div>
   );
 }
