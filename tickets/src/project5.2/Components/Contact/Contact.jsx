@@ -1,7 +1,7 @@
 import ContactStyle from './Contact.module.scss';
 import Button from '../../../Button/Button';
 
-function Contact({contact, action, toggleModal, goBack}) {
+function Contact({contact, onSuccessHandler, toggleModal, goBack}) {
 
   return contact !== null ? (
     <>
@@ -26,7 +26,7 @@ function Contact({contact, action, toggleModal, goBack}) {
             <Button 
             text="Edit"
             name="edit"
-            action={action}
+            action={onSuccessHandler}
             />
             <Button 
             text="Delete"

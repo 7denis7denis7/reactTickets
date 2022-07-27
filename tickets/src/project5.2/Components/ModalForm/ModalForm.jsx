@@ -11,26 +11,33 @@ import close from '../../../icons/close.svg';
 
 
 function ModalForm(props) {
-  const {action, addContact, contact, updateContacts, updateCurrent} = props;
+  const {openModal, addContact, contact, onUpdateSuccessHandler} = props;
+  
+  const [firstName, setName] = useState(()=>{
+    return contact ? contact.firstName : '';
+  });
+  const [lastName, setSurname] = useState(()=>{
+    return contact ? contact.lastName : '';
+  });
+  const [phone, setNumber] = useState(()=>{
+    return contact ? contact.phone : '';
+  });
 
-  const [firstName, setName] = useState(contact ? contact.firstName : '');
-  const [lastName, setSurname] = useState(contact ? contact.lastName : '');
-  const [phone, setNumber] = useState(contact ? contact.phone : '');
 
   const regNumber = useMemo(()=> {
-    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    return /^\+[0-9]{12}$/;
   }, [])
 
   const validateName = (str) => {
-    if(str.length > 0 && str.length < 10) return true;
+    if(str.length > 0 && str.length < 10) return str;
     return false;
   }
   const validateSurname = (str) => {
-    if(str.length > 0 && str.length < 20) return true;
+    if(str.length > 0 && str.length < 20) return str;
     return false;
   }
   const validatePhone = (str) => {
-    if (regNumber.test(str)) return true;
+    if (regNumber.test(str)) return str;
     return false;
   }
 
@@ -40,10 +47,11 @@ function ModalForm(props) {
     if(validateName(firstName) && validateSurname(lastName) && validatePhone(phone)){
       if(addContact){
         const newContact = [{firstName, lastName, phone, id: new Date().getTime()}];
-        addContact(newContact);
-        action();
         postContact(...newContact)
-        .then(function (response) {})
+        .then(function (response) {
+          addContact(newContact);
+          openModal();
+        })
         .catch(function (error) {
           console.log(error);
         });
@@ -57,14 +65,14 @@ function ModalForm(props) {
     e.preventDefault();
     if(validateName(firstName) && validateSurname(lastName) && validatePhone(phone)){
       const updated = {firstName, lastName, phone}
-      updateContacts(updated, contact.id);
-      updateCurrent(updated);
       putContact(updated, contact.id)
-      .then(function (response) {})
+      .then(function (response) {
+        onUpdateSuccessHandler(updated, contact.id);
+      })
       .catch(function (error) {
         console.log(error);
       });
-      action();
+      openModal();
     }else{
       alert('Check the validity of the entered values');
     }
@@ -82,7 +90,7 @@ function ModalForm(props) {
   return ReactDom.createPortal(
     <div className={cn(ModalFormStyle.modal, ModalFormStyle.modal__active)}>
       <div className={ModalFormStyle.modal__wrapper}>
-        <img className={ModalFormStyle.modal__close} onClick={action} src={close} alt="close"/>
+        <img className={ModalFormStyle.modal__close} onClick={openModal} src={close} alt="close"/>
         <form>
           <label htmlFor="name">Name</label>
           <input id="name" value={firstName} onChange={(e) => setInputsState(e, setName)} type="text"/>

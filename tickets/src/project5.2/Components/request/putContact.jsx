@@ -13,4 +13,3 @@ function putContact (obj, id) {
 
 
 export default putContact;
-

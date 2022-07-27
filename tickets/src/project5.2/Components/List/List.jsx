@@ -2,12 +2,12 @@ import ListStyle from './List.module.scss';
 
 import Button from '../../../Button/Button';
 
-function List({contacts, action, chooseContact}) {
+function List({initialValues, onSuccessHandler, chooseContact}) {
   return (
     <div className={ListStyle.list}>
       <div className={ListStyle.list__contacts}>
         {
-          contacts.map(item => {
+          initialValues.map(item => {
             return(                                         
               <div className={ListStyle.list__row} key={item.id} onClick={() => chooseContact(item)}> 
                 <div>{item.firstName}&nbsp;{item.lastName}</div>
@@ -20,7 +20,7 @@ function List({contacts, action, chooseContact}) {
       <Button 
         text="Add contacts" 
         name="add"
-        action={action}
+        action={onSuccessHandler}
       />
     </div>
   );
