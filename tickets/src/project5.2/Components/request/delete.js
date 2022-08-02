@@ -1,10 +1,10 @@
-import axios from 'axios';
+import request from './requets';
 
 
 function deleteFromServer (id) {
-  const url = `https://62d05e8dd9bf9f170588865f.mockapi.io/contact/${id}`;
+  const url = `contact/${id}`;
 
-  return axios.delete(url, {})
+  return request.delete(url, {})
 }
 
 

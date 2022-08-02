@@ -1,13 +1,14 @@
-import axios from 'axios';
+import request from './requets';
 
 function postContact (obj) {
-  const url = `https://62d05e8dd9bf9f170588865f.mockapi.io/contact`;
+  const url = 'contact'
 
-  return axios.post(url, {
+  return request.post(url, {
     firstName: obj.firstName,
     lastName: obj.lastName,
     phone: obj.phone
   })
+
 }
 
 

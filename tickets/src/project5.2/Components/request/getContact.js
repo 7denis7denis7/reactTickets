@@ -1,11 +1,10 @@
-import axios from 'axios';
+import request from './requets';
 
 function getContact () {
-  const url = `https://62d05e8dd9bf9f170588865f.mockapi.io/contact`;
+  const url = 'contact';
 
-  return axios.get(url)
+  return request.get(url)
 }
-
 
 export default getContact;
 

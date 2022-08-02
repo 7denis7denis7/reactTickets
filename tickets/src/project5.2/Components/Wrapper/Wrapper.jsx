@@ -1,13 +1,12 @@
 import {useState, useCallback, useEffect} from 'react';
 import WrapperStyle from './Wrapper.module.scss';
-
 import getContact from '../request/getContact';
-
 
 import List from '../List/List';
 import ModalForm from '../ModalForm/ModalForm';
 import DeleteContact from '../DeleteModal/DeleteModal';
 import Contact from '../Contact/Contact';
+import Modal from '../Modal/Modal';
 
 
 function Wrapper() {
@@ -19,8 +18,7 @@ function Wrapper() {
   const onUpdateSuccessHandler = (obj, id) => {
     const tempContacts = initialValues.map(item => {
       if(item.id === id){
-        obj.id = id;
-        return obj;
+        return {...obj, id};
       }else{
         return item;
       }
@@ -31,10 +29,6 @@ function Wrapper() {
     setCurrentContact(obj)
   }
 
-
-
-
-
   const toggleModal = useCallback(()=>{
     setIsOpen(!isOpen);
   }, [isOpen]);
@@ -44,7 +38,7 @@ function Wrapper() {
   }, [modalDelete]);
 
   const addNewContact = useCallback((newContact)=>{
-    setInitialValues(prev => [...prev, ...newContact]);
+    setInitialValues(prev => [...prev, newContact]);
   }, [initialValues]);
 
   const chooseContact = useCallback((item)=> {
@@ -53,6 +47,12 @@ function Wrapper() {
 
   const goBack = () => {
     setCurrentContact(null)
+  }
+  
+  const onDeleteSuccess = (tempContacts) => {
+    toggleModalDelete();
+    setCurrentContact(null);
+    setInitialValues(tempContacts);
   }
 
   useEffect(()=>{
@@ -68,23 +68,28 @@ function Wrapper() {
   return (
     <div className={WrapperStyle.wrapper}>
       <h2>List of contacts</h2>
-      {!currentContact &&
-        <List initialValues={initialValues} onSuccessHandler={toggleModal} chooseContact={chooseContact}/>
+      {
+        currentContact ?  
+          <Contact contact={currentContact} onSuccessHandler={toggleModal} toggleModal={toggleModalDelete} goBack={goBack} /> 
+          : 
+          <List initialValues={initialValues} onSuccessHandler={toggleModal} chooseContact={chooseContact}/>
       }
-      {currentContact &&
-        <Contact contact={currentContact} onSuccessHandler={toggleModal} toggleModal={toggleModalDelete} goBack={goBack} />
-      }
-      {isOpen &&
-        <ModalForm onUpdateSuccessHandler={onUpdateSuccessHandler} openModal={toggleModal} addContact={addNewContact} contact={currentContact}/>
-      }
-      <DeleteContact 
-        modal={modalDelete} 
-        toggleModal={toggleModalDelete}
-        current={currentContact} 
-        initialValues={initialValues} 
-        setInitialValues={setInitialValues} 
-        setCurrentContact={setCurrentContact} 
-      />
+      <Modal isOpen={isOpen} modal={modalDelete}> 
+        <ModalForm 
+          isOpen={isOpen}
+          onUpdateSuccessHandler={onUpdateSuccessHandler} 
+          toggleModal={toggleModal} 
+          addContact={addNewContact} 
+          contact={currentContact}
+        />
+        <DeleteContact 
+          modal={modalDelete} 
+          toggleModal={toggleModalDelete}
+          current={currentContact} 
+          initialValues={initialValues} 
+          onDeleteSuccess={onDeleteSuccess}
+      /> 
+      </Modal>
     </div>
   );
 }

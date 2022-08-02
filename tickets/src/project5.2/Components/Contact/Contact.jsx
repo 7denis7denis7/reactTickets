@@ -3,7 +3,7 @@ import Button from '../../../Button/Button';
 
 function Contact({contact, onSuccessHandler, toggleModal, goBack}) {
 
-  return contact !== null ? (
+  return (
     <>
       <Button 
         text="Go back" 
@@ -36,9 +36,8 @@ function Contact({contact, onSuccessHandler, toggleModal, goBack}) {
           </div>
         </div>
       </div>
-    </>
+    </> 
   )
-  : null;
 }
 
 export default Contact;
