@@ -1,18 +1,14 @@
 import ReactDom from 'react-dom';
 import ModalStyle from './Modal.module.scss';
 
-function Modal(props) {
-  const {isOpen, modal} = props;
+function Modal({children}) {
   return (
-    isOpen || modal ?
     ReactDom.createPortal(
       <div className={ModalStyle.modal}>
-        {props.children}
+        {children}
       </div>,
       document.getElementById('placeForModal')
     )
-    :
-    null
   )
 }
 

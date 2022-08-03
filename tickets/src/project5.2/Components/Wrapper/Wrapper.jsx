@@ -6,7 +6,6 @@ import List from '../List/List';
 import ModalForm from '../ModalForm/ModalForm';
 import DeleteContact from '../DeleteModal/DeleteModal';
 import Contact from '../Contact/Contact';
-import Modal from '../Modal/Modal';
 
 
 function Wrapper() {
@@ -74,22 +73,20 @@ function Wrapper() {
           : 
           <List initialValues={initialValues} onSuccessHandler={toggleModal} chooseContact={chooseContact}/>
       }
-      <Modal isOpen={isOpen} modal={modalDelete}> 
-        <ModalForm 
-          isOpen={isOpen}
-          onUpdateSuccessHandler={onUpdateSuccessHandler} 
-          toggleModal={toggleModal} 
-          addContact={addNewContact} 
-          contact={currentContact}
-        />
-        <DeleteContact 
-          modal={modalDelete} 
-          toggleModal={toggleModalDelete}
-          current={currentContact} 
-          initialValues={initialValues} 
-          onDeleteSuccess={onDeleteSuccess}
+      <ModalForm 
+        isOpen={isOpen}
+        onUpdateSuccessHandler={onUpdateSuccessHandler} 
+        toggleModal={toggleModal} 
+        addContact={addNewContact} 
+        contact={currentContact}
+      />
+      <DeleteContact 
+        modal={modalDelete} 
+        toggleModal={toggleModalDelete}
+        current={currentContact} 
+        initialValues={initialValues} 
+        onDeleteSuccess={onDeleteSuccess}
       /> 
-      </Modal>
     </div>
   );
 }

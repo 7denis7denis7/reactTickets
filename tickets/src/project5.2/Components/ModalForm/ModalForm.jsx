@@ -7,6 +7,7 @@ import putContact from '../request/putContact';
 import Button from '../../../Button/Button';
 
 import close from '../../../icons/close.svg';
+import Modal from '../Modal/Modal';
 
 
 function ModalForm(props) {
@@ -75,23 +76,25 @@ function ModalForm(props) {
 
   return (
     isOpen ? 
-    <div className={ModalFormStyle.modal__wrapper}>
-      <img className={ModalFormStyle.modal__close} onClick={toggleModal} src={close} alt="close"/>
-        <form>
-          <label htmlFor="name">Name</label>
-          <input id="name" value={firstName} onChange={(e) => setInputsState(e, setName)} type="text"/>
-          <label htmlFor="surname">Surname</label>
-          <input id="surname" value={lastName} onChange={(e) => setInputsState(e, setSurname)} type="text"/>
-          <label htmlFor="number">Number</label>
-          <input id="number" value={phone} onChange={(e) => setInputsState(e, setNumber)} type="text"/>
-          {
-            contact && <Button text="Update" action={(e) => updatedContacts(e)} type="button" name="button123" className={ModalFormStyle.modal__btn}/>
-          }
-          {
-            !contact && <Button text="Save" action={(e) => submitForm(e)} type="submit" name="button12" className={ModalFormStyle.modal__btn}/>
-          }
-        </form>
-    </div>  
+      <Modal>
+        <div className={ModalFormStyle.modal__wrapper}>
+          <img className={ModalFormStyle.modal__close} onClick={toggleModal} src={close} alt="close"/>
+            <form>
+              <label htmlFor="name">Name</label>
+              <input id="name" value={firstName} onChange={(e) => setInputsState(e, setName)} type="text"/>
+              <label htmlFor="surname">Surname</label>
+              <input id="surname" value={lastName} onChange={(e) => setInputsState(e, setSurname)} type="text"/>
+              <label htmlFor="number">Number</label>
+              <input id="number" value={phone} onChange={(e) => setInputsState(e, setNumber)} type="text"/>
+              {
+                contact && <Button text="Update" action={(e) => updatedContacts(e)} type="button" name="button123" className={ModalFormStyle.modal__btn}/>
+              }
+              {
+                !contact && <Button text="Save" action={(e) => submitForm(e)} type="submit" name="button12" className={ModalFormStyle.modal__btn}/>
+              }
+            </form>
+        </div>  
+      </Modal>
     :
     null
   )
