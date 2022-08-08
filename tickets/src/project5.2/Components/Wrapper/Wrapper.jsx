@@ -45,7 +45,7 @@ function Wrapper() {
   }, [currentContact])
 
   const goBack = () => {
-    setCurrentContact(null)
+    setCurrentContact(null);
   }
   
   const onDeleteSuccess = (tempContacts) => {
