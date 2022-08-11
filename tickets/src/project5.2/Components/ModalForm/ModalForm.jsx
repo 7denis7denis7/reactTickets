@@ -10,7 +10,7 @@ import Modal from '../Modal/Modal';
 
 
 function ModalForm(props) {
-  const {toggleModal, addContact, contact, onUpdateSuccessHandler, isOpen} = props;
+  const {toggleModal, onSuccessAdded, contact, onUpdateSuccessHandler, isOpenModal} = props;
 
   const [firstName, setName] = useState('');
   const [lastName, setSurname] = useState('');
@@ -29,11 +29,11 @@ function ModalForm(props) {
   const submitForm = (e) => {
     e.preventDefault();
     if(validateName(firstName) && validateSurname(lastName) && validatePhone(phone)){
-      if(addContact){
+      if(onSuccessAdded){
         const newContact = {firstName, lastName, phone, id: new Date().getTime()};
         postContact(newContact)
         .then(function (response) {
-          addContact(newContact);
+          onSuccessAdded(newContact);
           toggleModal();
         })
         .catch(function (error) {
@@ -82,7 +82,7 @@ function ModalForm(props) {
   }, [contact])
 
   return (
-    isOpen ? 
+    isOpenModal ? 
       <Modal toggleModal={toggleModal}>
         <form>
           <label htmlFor="name">Name</label>

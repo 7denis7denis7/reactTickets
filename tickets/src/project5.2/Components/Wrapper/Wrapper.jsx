@@ -29,20 +29,20 @@ function Wrapper() {
   }
 
   const toggleModal = useCallback(()=>{
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsOpen(prevState => !prevState);
+  }, []);
 
   const toggleModalDelete = useCallback(()=>{
     setModalDelete(!modalDelete);
   }, [modalDelete]);
 
-  const addNewContact = useCallback((newContact)=>{
+  const addNewContact = (newContact) => {
     setInitialValues(prev => [...prev, newContact]);
-  }, [initialValues]);
+  };
 
   const chooseContact = useCallback((item)=> {
-      setCurrentContact({...item});
-  }, [currentContact])
+    setCurrentContact(item);
+  }, [])
 
   const goBack = () => {
     setCurrentContact(null);
@@ -52,6 +52,15 @@ function Wrapper() {
     toggleModalDelete();
     setCurrentContact(null);
     setInitialValues(tempContacts);
+  }
+
+  const deleteCurrentContact = (id) => {
+    const tempContacts = initialValues.filter(item => {
+      if(item.id !== id){
+        return item;
+      }
+    });
+    onDeleteSuccess(tempContacts);
   }
 
   useEffect(()=>{
@@ -74,18 +83,19 @@ function Wrapper() {
           <List initialValues={initialValues} onSuccessHandler={toggleModal} chooseContact={chooseContact}/>
       }
       <ModalForm 
-        isOpen={isOpen}
+        isOpenModal={isOpen}
         onUpdateSuccessHandler={onUpdateSuccessHandler} 
         toggleModal={toggleModal} 
-        addContact={addNewContact} 
-        contact={currentContact}
+        onSuccessAdded={addNewContact} 
+        currentContact={currentContact}
       />
       <DeleteContact 
-        modal={modalDelete} 
+        isOpenModal={modalDelete} 
         toggleModal={toggleModalDelete}
-        current={currentContact} 
+        currentContact={currentContact} 
         initialValues={initialValues} 
         onDeleteSuccess={onDeleteSuccess}
+        deleteCurrentContact={deleteCurrentContact}
       /> 
     </div>
   );
