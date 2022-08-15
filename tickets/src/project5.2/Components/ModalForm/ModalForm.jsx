@@ -10,7 +10,8 @@ import Modal from '../Modal/Modal';
 
 
 function ModalForm(props) {
-  const {toggleModal, onSuccessAdded, contact, onUpdateSuccessHandler, isOpenModal} = props;
+  const {toggleModal, onSuccessAdded, currentContact, onUpdateSuccessHandler, isOpenModal} = props;
+
 
   const [firstName, setName] = useState('');
   const [lastName, setSurname] = useState('');
@@ -49,9 +50,9 @@ function ModalForm(props) {
     e.preventDefault();
     if(validateName(firstName) && validateSurname(lastName) && validatePhone(phone)){
       const updated = {firstName, lastName, phone}
-      putContact(updated, contact.id)
+      putContact(updated, currentContact.id)
       .then(function (response) {
-        onUpdateSuccessHandler(updated, contact.id);
+        onUpdateSuccessHandler(updated, currentContact.id);
       })
       .catch(function (error) {
         console.log(error);
@@ -69,8 +70,8 @@ function ModalForm(props) {
 
 
   useEffect(()=>{
-    if(contact){
-      const {firstName, lastName, phone} = contact;
+    if(currentContact){
+      const {firstName, lastName, phone} = currentContact;
       setName(firstName);
       setSurname(lastName);
       setNumber(phone);
@@ -79,7 +80,7 @@ function ModalForm(props) {
       setSurname('');
       setNumber('');
     }
-  }, [contact])
+  }, [currentContact])
 
   return (
     isOpenModal ? 
@@ -92,10 +93,10 @@ function ModalForm(props) {
           <label htmlFor="number">Number</label>
           <input id="number" value={phone} onChange={(e) => setInputsState(e, setNumber)} type="text"/>
           {
-            contact && <Button text="Update" action={(e) => updatedContacts(e)} type="button" name="button123" className={ModalFormStyle.modal__btn}/>
+            currentContact && <Button text="Update" action={(e) => updatedContacts(e)} type="button" name="button123" className={ModalFormStyle.modal__btn}/>
           }
           {
-            !contact && <Button text="Save" action={(e) => submitForm(e)} type="submit" name="button12" className={ModalFormStyle.modal__btn}/>
+            !currentContact && <Button text="Save" action={(e) => submitForm(e)} type="submit" name="button12" className={ModalFormStyle.modal__btn}/>
           }
         </form>  
       </Modal>

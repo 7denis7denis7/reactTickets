@@ -33,8 +33,8 @@ function Wrapper() {
   }, []);
 
   const toggleModalDelete = useCallback(()=>{
-    setModalDelete(!modalDelete);
-  }, [modalDelete]);
+    setModalDelete(prevState => !prevState);
+  }, []);
 
   const addNewContact = (newContact) => {
     setInitialValues(prev => [...prev, newContact]);
@@ -93,7 +93,6 @@ function Wrapper() {
         isOpenModal={modalDelete} 
         toggleModal={toggleModalDelete}
         currentContact={currentContact} 
-        initialValues={initialValues} 
         onDeleteSuccess={onDeleteSuccess}
         deleteCurrentContact={deleteCurrentContact}
       /> 
