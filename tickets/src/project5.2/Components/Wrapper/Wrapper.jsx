@@ -36,9 +36,11 @@ function Wrapper() {
     setModalDelete(prevState => !prevState);
   }, []);
 
-  const addNewContact = (newContact) => {
+  const addNewContact = useCallback((newContact) => {
+    alert('Add new contact funct')
+    console.log(currentContact);
     setInitialValues(prev => [...prev, newContact]);
-  };
+  }, []) 
 
   const chooseContact = useCallback((item)=> {
     setCurrentContact(item);
