@@ -37,8 +37,6 @@ function Wrapper() {
   }, []);
 
   const addNewContact = useCallback((newContact) => {
-    alert('Add new contact funct')
-    console.log(currentContact);
     setInitialValues(prev => [...prev, newContact]);
   }, []) 
 
