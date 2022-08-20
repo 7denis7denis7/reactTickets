@@ -80,7 +80,7 @@ function ModalForm(props) {
       setSurname('');
       setNumber('');
     }
-  }, [currentContact])
+  }, [isOpenModal])
 
   return (
     isOpenModal ? 
