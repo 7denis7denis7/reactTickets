@@ -1,0 +1,18 @@
+.cast{
+  &__row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+  &__character{
+    font-weight: 500;
+    text-decoration: underline;
+    &:after{
+      content: '|';
+      font-weight: 700;
+      color: red;
+      margin: 0 10px;
+    }
+  }
+}
