@@ -1,26 +1,21 @@
-import {Outlet, useParams} from 'react-router-dom';
+import {Outlet, useParams, Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import getData from '../requests/getData';
-import {Link} from 'react-router-dom'
+
+import getDetails from '../requests/getDetails';
+import EmptyPlaceholder from '../EmptyPlaceholder/EmptyPlaceholder'
 
 import '../assets/commonStyle.scss';
-
 import DetailsStyle from './Details.module.scss';
 
 
 function Details() {
-    const url = `https://api.themoviedb.org/3/movie/${useParams().id}?api_key=f6dd169ff13f1a568425784d0d103598&language=en-US`;
-
     const [initialValues, setInitialValues] = useState(null);
-
+    const {id} = useParams();
 
     useEffect(() => {
-      getData(url)
-      .then(resp => resp.json())
+      getDetails(id)
       .then(resp =>setInitialValues(resp))
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(error => console.log(error))
     }, []);
   
   return (
@@ -40,7 +35,12 @@ function Details() {
                   <div className={DetailsStyle.card__subtitle}>Genres:</div>
                   <div>
                     {
-                      initialValues?.genres.map(item => <div key={item.id}>{item.name}</div>)
+                      initialValues?.genres?.length ? 
+                        initialValues?.genres.map(item => <div key={item.id}>{item.name}</div>)
+                      :
+                      <EmptyPlaceholder 
+                        text='This film has no genres'
+                      />
                     }
                   </div>
                 </div>
@@ -64,9 +64,7 @@ function Details() {
             Reviews
           </Link>
         </div>
-        <div className={DetailsStyle.card__content}>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </div>
     

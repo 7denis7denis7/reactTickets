@@ -1,23 +1,17 @@
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import getData from '../requests/getData';
+import getTrandingFilms from '../requests/getTrandingFilms';
 
 import MainPageStyle from './MainPage.module.scss';
-
-const url = 'https://api.themoviedb.org/3/trending/all/week?api_key=f6dd169ff13f1a568425784d0d103598';
-
 
 function MainPage() {
   const [initialValues, setInitialValues] = useState([]);
 
   useEffect(() => {
-    getData(url)
-    .then(resp => resp.json())
-    .then(resp => setInitialValues(resp.results))
-    .catch(function (error) {
-      console.log(error);
-    });
+    getTrandingFilms()
+    .then(result => setInitialValues(result))
+    .catch(error => console.log(error))
   }, []);
 
   return (

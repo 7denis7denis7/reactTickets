@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import getData from '../requests/getData';
+
+import getCast from '../requests/getCast';
+import EmptyPlaceholder from '../EmptyPlaceholder/EmptyPlaceholder'
 
 import CastStyle from './Cast.module.scss';
 
@@ -9,27 +11,28 @@ function Cast() {
   const {id} = useParams();
 
   useEffect(() => {
-    const url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=f6dd169ff13f1a568425784d0d103598&language=en-US`;
-    
-    getData(url)
-    .then(data => data.json())
-    .then(data => setInfoCast(data.cast))
-    .catch(error => {
-      console.log(error);
-    })
+    getCast(id)
+    .then(data => setInfoCast(data))
+    .catch(error => console.log(error))
   }, [])
+  
   return (
-    <div>
+    <div className={CastStyle.cast__content}>
       {
-        infoCast.map(item => {
-          const {id, character, original_name} = item;
-          return(
-            <div className={CastStyle.cast__row} key={id}>
-              <div className={CastStyle.cast__character}>{character}</div>
-              <div className={CastStyle.cast__name}>{original_name}</div>
-            </div>
-          )
-        })
+        infoCast.length ? 
+          infoCast.map(item => {
+            const {id, character, original_name} = item;
+            return(
+              <div className={CastStyle.cast__row} key={id}>
+                <div className={CastStyle.cast__character}>{character}</div>
+                <div className={CastStyle.cast__name}>{original_name}</div>
+              </div>
+            )
+          })
+        :
+          <EmptyPlaceholder 
+            text='This movie has no actors'
+          />
       }
     </div>
   );
