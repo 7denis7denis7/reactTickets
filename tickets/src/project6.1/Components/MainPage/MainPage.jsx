@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import getTrandingFilms from '../requests/getTrandingFilms';
+import {getTrandingFilms} from '../requests/requests';
 
 import MainPageStyle from './MainPage.module.scss';
 
@@ -11,7 +11,6 @@ function MainPage() {
   useEffect(() => {
     getTrandingFilms()
     .then(result => setInitialValues(result))
-    .catch(error => console.log(error))
   }, []);
 
   return (

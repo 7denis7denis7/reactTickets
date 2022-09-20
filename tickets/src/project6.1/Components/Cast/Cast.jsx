@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 
-import getCast from '../requests/getCast';
+import {getCast} from '../requests/requests';
 import EmptyPlaceholder from '../EmptyPlaceholder/EmptyPlaceholder'
 
 import CastStyle from './Cast.module.scss';
@@ -13,13 +13,12 @@ function Cast() {
   useEffect(() => {
     getCast(id)
     .then(data => setInfoCast(data))
-    .catch(error => console.log(error))
   }, [])
   
   return (
     <div className={CastStyle.cast__content}>
       {
-        infoCast.length ? 
+        infoCast?.length ? 
           infoCast.map(item => {
             const {id, character, original_name} = item;
             return(

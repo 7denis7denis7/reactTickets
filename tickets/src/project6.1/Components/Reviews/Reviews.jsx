@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 
-import getReview from '../requests/getReviews';
+import {getReview} from '../requests/requests';
 import EmptyPlaceholder from '../EmptyPlaceholder/EmptyPlaceholder'
 
 import ReviewsStyle from './Reviews.module.scss';
@@ -13,13 +13,12 @@ function Reviews() {
   useEffect(() => {
     getReview(id)
     .then(resp => setReviews(resp))
-    .catch(error => console.log(error))
   }, []);
 
   return (
     <div className={ReviewsStyle.review__content}>
       {
-        reviews.length ? 
+        reviews?.length ? 
           reviews.map(item => {
             const {id, author_details, content} = item;
             return(

@@ -1,7 +1,7 @@
 import {Outlet, useParams, Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 
-import getDetails from '../requests/getDetails';
+import {getDetails} from '../requests/requests';
 import EmptyPlaceholder from '../EmptyPlaceholder/EmptyPlaceholder'
 
 import '../assets/commonStyle.scss';
@@ -15,7 +15,6 @@ function Details() {
     useEffect(() => {
       getDetails(id)
       .then(resp =>setInitialValues(resp))
-      .catch(error => console.log(error))
     }, []);
   
   return (
