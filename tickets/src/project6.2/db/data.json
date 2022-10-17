@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Mercedes",
+    "img" : "https://i.pinimg.com/736x/09/ef/92/09ef92ab3c4f98288357e70384c75766.jpg",
+    "price": 1000,
+    "fuel": "Petrol",
+    "id": 1,
+    "color" : "Gray"
+  },
+  {
+    "name": "BMW",
+    "img" : "https://i.pinimg.com/564x/bf/49/df/bf49df727083174d3ee948f8a6f7a1ea.jpg",
+    "price": 900,
+    "fuel": "Diesel",
+    "id": 2,
+    "color" : "Black"
+  },
+  {
+    "name": "Tesla",
+    "img" : "https://i.pinimg.com/564x/d6/ff/7b/d6ff7bf47622ff1956480b5cab980d4e.jpg",
+    "price": 1200,
+    "fuel": "Energy",
+    "id": 3,
+    "color" : "Black"
+  },
+  {
+    "name": "Ford",
+    "img" : "https://i.pinimg.com/564x/d5/ec/4c/d5ec4c025e5202a832bb9400c4b88ae8.jpg",
+    "price": 700,
+    "fuel": "Hybrid",
+    "id": 4,
+    "color" : "Red"
+  },
+  {
+    "name": "Fiat",
+    "img" : "https://i.pinimg.com/564x/43/b6/8d/43b68da6217eb13920fe1ac1cdaec2fc.jpg",
+    "price": 500,
+    "fuel": "Petrol",
+    "id": 5,
+    "color" : "Green"
+  },
+  {
+    "name": "Ford",
+    "img" : "https://i.pinimg.com/564x/32/8e/3c/328e3ceb8836e50f02391c5cb32fd079.jpg",
+    "price": 600,
+    "fuel": "Petrol",
+    "id": 6,
+    "color" : "Green"
+  },
+  {
+    "name": "Mercedes",
+    "img" : "https://i.pinimg.com/564x/72/a0/cf/72a0cfff68555b0d2360d593a435edd5.jpg",
+    "price": 1100,
+    "fuel": "Diesel",
+    "id": 7,
+    "color" : "Red"
+  },
+  {
+    "name": "BMW",
+    "img" : "https://i.pinimg.com/564x/c3/68/c2/c368c27153a773a44edbad6806dbba16.jpg",
+    "price": 1300,
+    "fuel": "Petrol",
+    "id": 8,
+    "color" : "Gray"
+  },
+  {
+    "name": "BMW",
+    "img" : "https://i.pinimg.com/564x/76/a6/1f/76a61f7aca188ed5163b50ef844c5dde.jpg",
+    "price": 1300,
+    "fuel": "Diesel",
+    "id": 9,
+    "color" : "Green"
+  }
+]
