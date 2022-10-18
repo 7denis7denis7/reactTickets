@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Select from 'react-select';
 
 import cn from 'classnames';
@@ -7,33 +7,24 @@ import FilterStyle from './Filter.module.scss';
 import '../../assets/commonStyle.scss';
 
 
-function Filters({searchParams, setSearchParams, fuelType, colors}) {
-
-  const nameCar = searchParams.get('name') || '';
-  const fuelQuery = searchParams.get('fuel') || '';
+function Filters(props) {
+  const {searchParams, setSearchParams, fuelType, colors, nameCar, fuelQuery, priceFromCar, priceToCar} = props;
   const colorCar = searchParams.get('color') || '';
-  const priceFromCar = searchParams.get('priceFrom') || '';
-  const priceToCar = searchParams.get('priceTo') || '';
 
   const currentFuel = fuelType.filter(item => {
-    if(item.value === fuelQuery){
-      return item;
-    }
+    return item.value === fuelQuery;
   })
-
-  let arrColors = colorCar.split(',')
 
   const filteredColor = [];
 
   let filteredColors = colors.filter(item => {
-    arrColors.forEach(itemInner => {
-      if(itemInner == item.value){
+    colorCar.split(',').forEach(itemInner => {
+      if(itemInner === item.value){
         filteredColor.push(item);
       }
     })
+    return item;
   })
-
-
 
 
   const [name, setName] = useState(nameCar);
@@ -43,31 +34,10 @@ function Filters({searchParams, setSearchParams, fuelType, colors}) {
   const [priceTo, setPriceTo] = useState(priceToCar)
 
 
-
-
-  useEffect(() => {
-    const currentFuel = fuelType.filter(item => {
-      if(item.value === fuelQuery){
-        return item;
-      }
-    })
-  }, [fuelQuery])
-
-
-  // let tmp;
-  // useEffect(() => {
-  //   console.log(tmp)
-  //   if(color){
-  //     const searchColors = color?.map(item => {
-  //       return item.value;
-  //     }) 
-  //     tmp = searchColors.join(',');
-  //   }
-  // }, [color])
-
   const handleSubmitForm = (e) => {
     e.preventDefault();
     const params = {};
+    
     if(name.length) params.name = name;
     if(fuel && fuel.value) params.fuel = fuel.value;
     if(priceFrom.length) params.priceFrom = priceFrom;
@@ -76,8 +46,7 @@ function Filters({searchParams, setSearchParams, fuelType, colors}) {
       const searchColors = color?.map(item => {
         return item.value;
       }) 
-      let tmp = searchColors.join(',');
-      params.color = tmp;
+      params.color = searchColors.join(',');
     }
     setSearchParams(params);
   }

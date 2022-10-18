@@ -48,29 +48,31 @@ function MainPage() {
       return true
     }
     let filtered = arrColors.filter(color1 => {
-        if(color1.toLowerCase() === element.color.toLowerCase()){
-          return element;
-        }
+      return color1.toLowerCase() === element.color.toLowerCase();
     })
     return filtered.length > 0 ? true : false
   }
 
-
-
-
   return (
     <>
       <Header />
-      <Filters searchParams={searchParams} setSearchParams={setSearchParams} fuelType={fuelType} colors={colors} />
+      <Filters 
+        searchParams={searchParams}
+        setSearchParams={setSearchParams} 
+        fuelType={fuelType} colors={colors} 
+        nameCar={nameCar} fuelQuery={fuelCar} 
+        priceFromCar={priceFromCar} 
+        priceToCar={priceToCar}
+      />
       <div className="container">
         <div className={MainPageStyle.wrapper}>
           {cars?.length ?
             cars?.filter(item => {
               if(item.name.toLowerCase().includes(nameCar.toLocaleLowerCase())
                 && (item.fuel.toLowerCase() === fuelCar.toLocaleLowerCase() || fuelCar.toLowerCase() === 'all' || fuelCar.toLowerCase() === '') 
-                && (filterByColor(item, colorsCar === null ? null : colorsCar.split(',')) || colorsCar == 'all' || colorsCar == '')
+                && (filterByColor(item, colorsCar === null ? null : colorsCar.split(',')) || colorsCar === 'all' || colorsCar === '')
                 && item.price >= priceFromCar
-                && (item.price <= priceToCar || priceToCar == '')
+                && (item.price <= priceToCar || priceToCar === '')
               )
               {
                 return item;
