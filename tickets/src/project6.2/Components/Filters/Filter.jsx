@@ -1,5 +1,12 @@
 import {useState} from 'react';
 import Select from 'react-select';
+import Input from '../Input/Input';
+
+import GetNameFromQuery from '../../helpers/name.js';
+import GetLowPriceFromQuery from '../../helpers/priceFrom.js';
+import GetUpPriceToQuery from '../../helpers/priceTo.js';
+import GetFuelFromQuery from '../../helpers/fuel.js';
+import GetColorFromQuery from '../../helpers/color.js';
 
 import cn from 'classnames';
 
@@ -7,31 +14,32 @@ import FilterStyle from './Filter.module.scss';
 import '../../assets/commonStyle.scss';
 
 
-function Filters(props) {
-  const {searchParams, setSearchParams, fuelType, colors, nameCar, fuelQuery, priceFromCar, priceToCar} = props;
-  const colorCar = searchParams.get('color') || '';
+const colors = [
+  { value: 'gray', label: 'Gray' },
+  { value: 'black', label: 'Black' },
+  { value: 'red', label: 'Red' },
+  { value: 'green', label: 'Green' }
+];
 
-  const currentFuel = fuelType.filter(item => {
-    return item.value === fuelQuery;
-  })
+
+function Filters(props) {
+  const {setSearchParams, fuelType} = props;
 
   const filteredColor = [];
 
-  let filteredColors = colors.filter(item => {
-    colorCar.split(',').forEach(itemInner => {
-      if(itemInner === item.value){
-        filteredColor.push(item);
-      }
-    })
-    return item;
+  colors.forEach(item => {
+    if(GetColorFromQuery().includes(item.value)){
+      filteredColor.push(item);
+    }
   })
 
+  const fuelname = GetFuelFromQuery();
 
-  const [name, setName] = useState(nameCar);
-  const [fuel, setFuel] = useState(...currentFuel || null);
-  const [color, setColor] = useState(...filteredColors || null);
-  const [priceFrom, setPriceFrom] = useState(priceFromCar)
-  const [priceTo, setPriceTo] = useState(priceToCar)
+  const [name, setName] = useState(GetNameFromQuery());
+  const [fuel, setFuel] = useState(() => fuelType.find(item => item.value === fuelname) || null);
+  const [color, setColor] = useState(colors || null);
+  const [priceFrom, setPriceFrom] = useState(GetLowPriceFromQuery())
+  const [priceTo, setPriceTo] = useState(GetUpPriceToQuery())
 
 
   const handleSubmitForm = (e) => {
@@ -56,15 +64,15 @@ function Filters(props) {
     <div className="container">
       <form 
         className={FilterStyle.filter}
-        onSubmit={(e) => handleSubmitForm(e)}
+        onSubmit={handleSubmitForm}
       >
         <div className={FilterStyle.filter__title}>Filters</div>
-        <input 
+        <Input 
+          type="text"
           className={FilterStyle.filter__input} 
-          type="text" 
-          value={name}
           placeholder="Search by name" 
-          onChange={(e) => setName(e.target.value)}
+          value={name}
+          action={(e) => setName(e.target.value)}
         />
         <Select
           className={FilterStyle.filter__select}
@@ -79,23 +87,23 @@ function Filters(props) {
           onChange={setColor}
           options={colors}
         />
-        <input 
-          className={cn(FilterStyle.filter__input, FilterStyle.filter__price)}
+        <Input 
           type="number"
+          className={cn(FilterStyle.filter__input, FilterStyle.filter__price)}
           placeholder="From"
+          value={priceFrom}
+          action={(e) => setPriceFrom(e.target.value)}
           min="0"
           step="100"
-          value={priceFrom}
-          onChange={(e) => setPriceFrom(e.target.value)}
         />
-        <input 
-          className={cn(FilterStyle.filter__input, FilterStyle.filter__price)}
+        <Input 
           type="number"
+          className={cn(FilterStyle.filter__input, FilterStyle.filter__price)}
           placeholder="To"
           value={priceTo}
+          action={(e) => setPriceTo(e.target.value)}
           min="0"
           step="100"
-          onChange={(e) => setPriceTo(e.target.value)}
         />
         <button 
           className={FilterStyle.filter__button}

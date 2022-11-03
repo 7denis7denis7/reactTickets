@@ -1,5 +1,11 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import {useSearchParams} from 'react-router-dom';
+
+import GetNameFromQuery from '../../helpers/name.js';
+import GetFuelFromQuery from '../../helpers/fuel.js';
+import GetLowPriceFromQuery from '../../helpers/priceFrom.js';
+import GetUpPriceToQuery from '../../helpers/priceTo.js';
+import GetColorFromQuery from '../../helpers/color.js';
 
 import Header from '../Header/Header';
 import CardProduct from '../CardProduct/CardProduct';
@@ -18,66 +24,78 @@ const fuelType = [
   { value: 'hybrid', label: 'Hybrid' },
 ];
 
-const colors = [
-  { value: 'gray', label: 'Gray' },
-  { value: 'black', label: 'Black' },
-  { value: 'red', label: 'Red' },
-  { value: 'green', label: 'Green' }
-];
-
 const arr = Data.map(item => item);
 
 function MainPage() {
   const [cars, setCars] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   
+
   useEffect(() => {
     setCars(arr)
   }, [])
 
-  const nameCar = searchParams.get('name') || '';
-  const fuelCar = searchParams.get('fuel') || '';
-  const colorsCar = searchParams.get('color' || '');
-  const priceFromCar = searchParams.get('priceFrom') || '';
-  const priceToCar = searchParams.get('priceTo') || '';
+  const nameCar = GetNameFromQuery();
+  const fuelCar = GetFuelFromQuery();
+  const colorsCar = GetColorFromQuery();
+  const priceFromCar = GetLowPriceFromQuery();
+  const priceToCar = GetUpPriceToQuery();
 
 
 
-  const filterByColor = (element, arrColors) => {
-    if(!arrColors){
+  const filterByName = (searchName, selectedName) => searchName.toLowerCase().includes(selectedName) ? true : false;
+
+  const filterByFuelType = (fuelType, selectedFuel) => fuelType.toLowerCase() === selectedFuel || selectedFuel === 'all' || selectedFuel === '' ? true : false;
+
+  const filterByLowerPrice = (price, selectedPriceFrom) => price >= selectedPriceFrom ? true : false;
+
+  const filterByUpperPrice = (price, selectedPriceTo) => price <= selectedPriceTo || selectedPriceTo === '' ? true : false;
+
+  const filterByColor = (element) => {
+    if(!colorsCar){
       return true
     }
-    let filtered = arrColors.filter(color1 => {
-      return color1.toLowerCase() === element.color.toLowerCase();
+    let filtered = colorsCar.split(',').some(function(color){
+      return color.toLowerCase() === element.color.toLowerCase();
     })
-    return filtered.length > 0 ? true : false
+
+    return filtered;
   }
+
+
+
+  const nameCarToLower = useMemo(() => {
+    return nameCar.toLowerCase();
+  }, [nameCar]) 
+
+  const fuelCarToLower = useMemo(() => {
+    return fuelCar.toLowerCase();
+  }, [fuelCar])
+
+
 
   return (
     <>
       <Header />
       <Filters 
-        searchParams={searchParams}
         setSearchParams={setSearchParams} 
-        fuelType={fuelType} colors={colors} 
-        nameCar={nameCar} fuelQuery={fuelCar} 
-        priceFromCar={priceFromCar} 
-        priceToCar={priceToCar}
+        fuelType={fuelType}
       />
       <div className="container">
         <div className={MainPageStyle.wrapper}>
           {cars?.length ?
             cars?.filter(item => {
-              if(item.name.toLowerCase().includes(nameCar.toLocaleLowerCase())
-                && (item.fuel.toLowerCase() === fuelCar.toLocaleLowerCase() || fuelCar.toLowerCase() === 'all' || fuelCar.toLowerCase() === '') 
-                && (filterByColor(item, colorsCar === null ? null : colorsCar.split(',')) || colorsCar === 'all' || colorsCar === '')
-                && item.price >= priceFromCar
-                && (item.price <= priceToCar || priceToCar === '')
-              )
-              {
-                return item;
-              }
-            })
+              const {name, fuel, price} = item;
+              if(filterByName(name, nameCarToLower)
+                && filterByFuelType(fuel, fuelCarToLower)
+                && (filterByColor(item)) 
+                && filterByLowerPrice(price, priceFromCar)
+                && filterByUpperPrice(price, priceToCar)
+              ) 
+              { 
+                return item; 
+              } 
+            }) 
             .map(item =>{
               const {name, img, price, fuel, id, color} = item;
               return(
