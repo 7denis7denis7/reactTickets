@@ -39,7 +39,7 @@ function Filters(props) {
   const [fuel, setFuel] = useState(() => fuelType.find(item => item.value === fuelname) || null);
   const [color, setColor] = useState(colors || null);
   const [priceFrom, setPriceFrom] = useState(GetLowPriceFromQuery())
-  const [priceTo, setPriceTo] = useState(GetUpPriceToQuery())
+  const [priceTo, setPriceTo] = useState(GetUpPriceToQuery() || '')
 
 
   const handleSubmitForm = (e) => {
@@ -48,7 +48,7 @@ function Filters(props) {
     
     if(name.length) params.name = name;
     if(fuel && fuel.value) params.fuel = fuel.value;
-    if(priceFrom.length) params.priceFrom = priceFrom;
+    if(priceFrom) params.priceFrom = priceFrom;
     if(priceTo.length) params.priceTo = priceTo;
     if(color && color.length){
       const searchColors = color?.map(item => {
@@ -91,7 +91,7 @@ function Filters(props) {
           type="number"
           className={cn(FilterStyle.filter__input, FilterStyle.filter__price)}
           placeholder="From"
-          value={priceFrom}
+          value={priceFrom || ''}
           action={(e) => setPriceFrom(e.target.value)}
           min="0"
           step="100"

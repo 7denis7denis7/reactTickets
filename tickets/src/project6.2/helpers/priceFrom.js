@@ -2,7 +2,7 @@ import {useSearchParams} from 'react-router-dom';
 
 function GetLowPriceFromQuery() {
   const [searchParams, setSearchParams] = useSearchParams();
-  return searchParams.get('priceFrom') || '';
+  return Number(searchParams.get('priceFrom')) || undefined;
 }
 
 export default GetLowPriceFromQuery;

@@ -43,23 +43,35 @@ function MainPage() {
 
 
 
-  const filterByName = (searchName, selectedName) => searchName.toLowerCase().includes(selectedName) ? true : false;
+  const filterByName = (searchName, selectedName) => searchName.toLowerCase().includes(selectedName);
 
-  const filterByFuelType = (fuelType, selectedFuel) => fuelType.toLowerCase() === selectedFuel || selectedFuel === 'all' || selectedFuel === '' ? true : false;
+  const filterByFuelType = (fuelType, selectedFuel) => fuelType.toLowerCase() === selectedFuel || selectedFuel === 'all' || selectedFuel === '';
 
-  const filterByLowerPrice = (price, selectedPriceFrom) => price >= selectedPriceFrom ? true : false;
+  const filterByLowerPrice = (price, selectedPriceFrom) => {
+    if(!!selectedPriceFrom){
+      return price >= selectedPriceFrom;
+    }
+    return price;
+  };
 
-  const filterByUpperPrice = (price, selectedPriceTo) => price <= selectedPriceTo || selectedPriceTo === '' ? true : false;
+  const filterByUpperPrice = (price, selectedPriceTo) => {
+    if(!!selectedPriceTo){
+      return price <= selectedPriceTo || selectedPriceTo === '';
+    }
+    return price;
+  }
+  
 
   const filterByColor = (element) => {
-    if(!colorsCar){
+    if(!colorsCar.length){
       return true
     }
-    let filtered = colorsCar.split(',').some(function(color){
-      return color.toLowerCase() === element.color.toLowerCase();
-    })
-
-    return filtered;
+    const colorElement = element.color.toLowerCase();
+    try{
+      return colorsCar?.some(color => color.toLowerCase() === colorElement);
+    }catch{
+      return [];
+    }
   }
 
 
@@ -71,6 +83,18 @@ function MainPage() {
   const fuelCarToLower = useMemo(() => {
     return fuelCar.toLowerCase();
   }, [fuelCar])
+
+  const filteredCars = cars?.filter(item => {
+    const {name, fuel, price} = item;
+    if(filterByName(name, nameCarToLower)
+      && filterByFuelType(fuel, fuelCarToLower)
+      && (filterByColor(item)) 
+      && filterByLowerPrice(price, priceFromCar)
+      && filterByUpperPrice(price, priceToCar)
+    ){ 
+      return item; 
+    } 
+  })
 
 
 
@@ -84,19 +108,7 @@ function MainPage() {
       <div className="container">
         <div className={MainPageStyle.wrapper}>
           {cars?.length ?
-            cars?.filter(item => {
-              const {name, fuel, price} = item;
-              if(filterByName(name, nameCarToLower)
-                && filterByFuelType(fuel, fuelCarToLower)
-                && (filterByColor(item)) 
-                && filterByLowerPrice(price, priceFromCar)
-                && filterByUpperPrice(price, priceToCar)
-              ) 
-              { 
-                return item; 
-              } 
-            }) 
-            .map(item =>{
+            filteredCars.map(item =>{
               const {name, img, price, fuel, id, color} = item;
               return(
                 <CardProduct 
