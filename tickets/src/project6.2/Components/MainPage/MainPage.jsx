@@ -6,6 +6,7 @@ import GetFuelFromQuery from '../../helpers/fuel.js';
 import GetLowPriceFromQuery from '../../helpers/priceFrom.js';
 import GetUpPriceToQuery from '../../helpers/priceTo.js';
 import GetColorFromQuery from '../../helpers/color.js';
+import { filterByName, filterByFuelType, filterByLowerPrice, filterByUpperPrice, filterByColor } from '../../helpers/filter.js';
 
 import Header from '../Header/Header';
 import CardProduct from '../CardProduct/CardProduct';
@@ -16,20 +17,11 @@ import Data from '../../db/data.json';
 import MainPageStyle from './MainPage.module.scss';
 import '../../assets/commonStyle.scss';
 
-const fuelType = [
-  { value: 'all', label: 'All' },
-  { value: 'petrol', label: 'Petrol' },
-  { value: 'diesel', label: 'Diesel' },
-  { value: 'energy', label: 'Energy' },
-  { value: 'hybrid', label: 'Hybrid' },
-];
-
-const arr = Data.map(item => item);
+const arr = [...Data]
 
 function MainPage() {
   const [cars, setCars] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  
 
   useEffect(() => {
     setCars(arr)
@@ -42,40 +34,6 @@ function MainPage() {
   const priceToCar = GetUpPriceToQuery();
 
 
-
-  const filterByName = (searchName, selectedName) => searchName.toLowerCase().includes(selectedName);
-
-  const filterByFuelType = (fuelType, selectedFuel) => fuelType.toLowerCase() === selectedFuel || selectedFuel === 'all' || selectedFuel === '';
-
-  const filterByLowerPrice = (price, selectedPriceFrom) => {
-    if(!!selectedPriceFrom){
-      return price >= selectedPriceFrom;
-    }
-    return price;
-  };
-
-  const filterByUpperPrice = (price, selectedPriceTo) => {
-    if(!!selectedPriceTo){
-      return price <= selectedPriceTo || selectedPriceTo === '';
-    }
-    return price;
-  }
-  
-
-  const filterByColor = (element) => {
-    if(!colorsCar.length){
-      return true
-    }
-    const colorElement = element.color.toLowerCase();
-    try{
-      return colorsCar?.some(color => color.toLowerCase() === colorElement);
-    }catch{
-      return [];
-    }
-  }
-
-
-
   const nameCarToLower = useMemo(() => {
     return nameCar.toLowerCase();
   }, [nameCar]) 
@@ -85,10 +43,10 @@ function MainPage() {
   }, [fuelCar])
 
   const filteredCars = cars?.filter(item => {
-    const {name, fuel, price} = item;
+    const {name, fuel, price, color} = item;
     if(filterByName(name, nameCarToLower)
       && filterByFuelType(fuel, fuelCarToLower)
-      && (filterByColor(item)) 
+      && (filterByColor(colorsCar, color)) 
       && filterByLowerPrice(price, priceFromCar)
       && filterByUpperPrice(price, priceToCar)
     ){ 
@@ -103,7 +61,7 @@ function MainPage() {
       <Header />
       <Filters 
         setSearchParams={setSearchParams} 
-        fuelType={fuelType}
+        searchParams={searchParams}
       />
       <div className="container">
         <div className={MainPageStyle.wrapper}>

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useMemo} from 'react';
 import Select from 'react-select';
 import Input from '../Input/Input';
 
@@ -21,20 +21,31 @@ const colors = [
   { value: 'green', label: 'Green' }
 ];
 
+const fuelType = [
+  { value: 'all', label: 'All' },
+  { value: 'petrol', label: 'Petrol' },
+  { value: 'diesel', label: 'Diesel' },
+  { value: 'energy', label: 'Energy' },
+  { value: 'hybrid', label: 'Hybrid' },
+];
 
 function Filters(props) {
-  const {setSearchParams, fuelType} = props;
+  const {setSearchParams, searchParams} = props;
 
-  const filteredColor = [];
+  const colorQuery = GetColorFromQuery();
 
-  colors.forEach(item => {
-    if(GetColorFromQuery().includes(item.value)){
-      filteredColor.push(item);
-    }
-  })
+  const filteredColor = useMemo(() => {
+    const filteredColor = [];
+    colors.forEach(item => {
+      if(colorQuery.includes(item.value)){
+        filteredColor.push(item);
+      }
+    })
+    return filteredColor;
+  }, []);
 
-  const fuelname = GetFuelFromQuery();
 
+  const [fuelname, setFuelName] = useState(GetFuelFromQuery());
   const [name, setName] = useState(GetNameFromQuery());
   const [fuel, setFuel] = useState(() => fuelType.find(item => item.value === fuelname) || null);
   const [color, setColor] = useState(colors || null);
