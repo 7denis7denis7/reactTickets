@@ -9,7 +9,6 @@ function Wrapper() {
   return (
     <div className={WrapperStyle.wrapper}>
       <Routes>
-        <Route path="/" index element={<MainPage />} />
         <Route path="*" index element={<MainPage />} />
       </Routes>
     </div>

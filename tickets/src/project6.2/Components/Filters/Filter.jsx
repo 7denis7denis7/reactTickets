@@ -44,8 +44,8 @@ function Filters(props) {
     return filteredColor;
   }, []);
 
-
-  const [fuelname, setFuelName] = useState(GetFuelFromQuery());
+  
+  const fuelname = GetFuelFromQuery();
   const [name, setName] = useState(GetNameFromQuery());
   const [fuel, setFuel] = useState(() => fuelType.find(item => item.value === fuelname) || null);
   const [color, setColor] = useState(colors || null);

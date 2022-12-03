@@ -8,7 +8,7 @@ const filterByLowerPrice = (price, selectedPriceFrom) => {
 };
 const filterByUpperPrice = (price, selectedPriceTo) => {
   if(!!selectedPriceTo){
-    return price <= selectedPriceTo || selectedPriceTo === false;
+    return price <= selectedPriceTo;
   }
   return price;
 }
