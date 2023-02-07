@@ -1,0 +1,79 @@
+.row{
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.row:last-child .textError{
+  bottom: 0;
+}
+
+.textError{
+  position: absolute;
+  bottom: -15px;
+  left: 12px;
+  color: red;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.input{
+  box-sizing: border-box;
+  width: 300px;
+  height: 40px;
+  border: 2px solid lightgray;
+  border-radius: 8px;
+  padding: 0 10px;
+  outline-color: #2584ff;
+  transition: .2s ease-in-out;
+}
+
+input::-webkit-input-placeholder { 
+  color: rgb(51, 49, 49);
+  font-size: 14px;
+}
+input::-moz-placeholder { 
+  color: rgb(51, 49, 49);
+  font-size: 14px;
+}
+input:-ms-input-placeholder {
+  color: rgb(51, 49, 49);
+  font-size: 14px;
+}
+input:-moz-placeholder { 
+  color: rgb(51, 49, 49);
+  font-size: 14px;
+}
+
+.error{
+  border-color: red;
+  outline-color: red;
+  transition: .2s ease-in-out;
+}
+
+.select{
+  width: 300px;
+  margin-bottom: 20px;
+  height: 40px;
+}
+
+.select div{
+  border-width: 2px;
+  border-radius: 8px;
+  box-shadow: none;
+  color: rgb(51, 49, 49);
+  font-size: 14px;
+}
+
+.select div:active,
+.select div:hover,
+.select div:focus{
+  border-color: #2584ff;
+}
+
+.select div:hover{
+  border-color: lightgray;
+}
+.selectError div,
+.selectError div:hover{
+  border-color: red;
+}

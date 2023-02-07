@@ -1,4 +1,4 @@
-import Wrapper from './project6.2/Components/Wrapper/Wrapper';
+import Wrapper from './project7/Components/Wrapper/Wrapper';
 
 function App() {
   return (
