@@ -1,0 +1,24 @@
+.modal{
+  &__title{
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  &__button{
+    width: 100%;
+    color: green;
+    border-color: green;
+    &:hover{
+      color: white;
+      background: green;
+    }
+    &:last-child{
+      margin-top: 15px;
+      color: red;
+      border-color: red;
+      &:hover{
+        color: white;
+        background: red;
+      }
+    }
+  }
+}

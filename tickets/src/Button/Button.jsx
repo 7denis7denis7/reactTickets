@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ButtonStyle from './Button.module.scss'
 
 function Input(props) {
