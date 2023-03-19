@@ -1,69 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
 const Field = (props) => {
   const {
-    inputValue,
-    setInputValue,
+    value,
+    onChange,
     validators,
-    renderContent,
-    type,
-    placeholder
+    component,
   } = props;
 
-  const [ invalidMessage, setInvalidMessage ] = useState(null);
+  const invalidMessage = useMemo(() => {
+    if(validators){
+
+      const messages = validators.map(item => {
+        if(item(value)){
+          return item(value);
+        }
+      }).filter(item => item !== undefined)
 
 
-  const handleChange = (event) => {
-    if(event.length){
-      let arr = [];
-      event.forEach(item => {
-        console.log(item.value)
-        arr.push(item.value);
-      })
-      setInputValue([...arr])
+      return messages;
     }
 
-    if(event.value){
-      setInputValue(event.value);
-      return;
-    }
+  }, [value, validators]);
 
-    if(event.target?.value || event.target?.value.length === 0){
-      setInputValue(event.target.value);
-    }
-  };
+  const RenderContent = component;
 
-
-  const inputValidation = (validators, value) => {
-    for (let i = 0; i < validators.length; i++){
-      const checkValue = validators[i](value);
-
-      if(checkValue !== undefined){
-        setInvalidMessage(checkValue);
-        break;
-      }
-
-      setInvalidMessage(null);
-    }
-
-  };
-
-  useEffect(() => {
-    inputValidation(validators, inputValue);
-  }, [inputValue, validators]);
-
-  const RenderContent = renderContent;
 
   return (
     <div className='row'>
       <RenderContent 
-        inputValue={inputValue}
-        handleChange={handleChange}
+        value={value}
+        onChange={onChange}
         invalid={invalidMessage}
-        type={type}
-        placeholder={placeholder}
       />
-      
+
       {invalidMessage && (
         <div className='textError'>
           {invalidMessage}

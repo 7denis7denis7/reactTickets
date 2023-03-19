@@ -8,18 +8,17 @@ const InputField = ( props ) => {
   const [ inputValue, setInputValue ] = useState(null);
   const {
     type, 
-    placeholder
+    placeholder,
   } = props
 
+  
 
   return (
     <Field 
-      inputValue={inputValue}
-      setInputValue={setInputValue}
+      value={inputValue}
+      onChange={setInputValue}
       validators={validators}
-      renderContent={Input}
-      type={type}
-      placeholder={placeholder}
+      component={(props) => <Input placeholder={placeholder} type={type} {...props} />}
     />
   )
 };

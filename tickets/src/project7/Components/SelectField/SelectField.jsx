@@ -9,10 +9,10 @@ const SelectField = () => {
 
   return (
     <Field 
-      inputValue={inputValue}
-      setInputValue={setInputValue}
+      value={inputValue}
+      onChange={setInputValue}
       validators={validators}
-      renderContent={Select}
+      component={Select}
     />
   )
 };

@@ -3,8 +3,8 @@ import '../CommonStyles/CommonStyles.css'
 
 const Input = (props) => {
   const {
-    inputValue,
-    handleChange,
+    value,
+    onChange,
     invalid,
     type='text',
     placeholder="Enter number"
@@ -12,11 +12,11 @@ const Input = (props) => {
 
   return (
     <input
-      className={`input ${invalid ? 'error' : ''}`}
+      className={`input ${invalid.length ? 'error' : ''}`}
       type={type}
       placeholder={placeholder}
-      value={inputValue || ''}
-      onChange={handleChange}
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
     />
   )
 }

@@ -11,17 +11,34 @@ const options = [
 const Select = (props) => {
   const {
     value,
-    handleChange,
+    onChange,
     invalid
   } = props;
+
+
+  const handleChange = (e) => {
+    if(e.length){
+      let arr = [];
+      e.forEach(item => {
+        arr.push(item.value);
+      })
+      onChange([...arr])
+    }
+
+    if(e.value){
+      onChange(e.value);
+      return;
+    }
+
+  }
 
   return (
     <SelectReact
       // Заменить isMulti на true, тогда значением будет массив который будет прогоняться в validator.js
       isMulti={false}
-      className={`select ${invalid ? 'selectError' : ''}`}
+      className={`select ${invalid.length ? 'selectError' : ''}`}
       defaultValue={value}
-      onChange={handleChange}
+      onChange={(e) => handleChange(e)}
       options={options}
     />
   )
