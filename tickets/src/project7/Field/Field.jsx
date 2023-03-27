@@ -23,7 +23,7 @@ const Field = (props) => {
 
   }, [value, validators]);
 
-  const RenderContent = component;
+  const RenderContent = useMemo(() => component, []);
 
 
   return (

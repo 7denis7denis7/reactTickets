@@ -11,8 +11,6 @@ const InputField = ( props ) => {
     placeholder,
   } = props
 
-  
-
   return (
     <Field 
       value={inputValue}
